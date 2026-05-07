@@ -1,0 +1,16 @@
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Infrastructure\bin\Debug\net10.0\BuildingBlocks.Infrastructure.deps.json
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Infrastructure\bin\Debug\net10.0\BuildingBlocks.Infrastructure.dll
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Infrastructure\bin\Debug\net10.0\BuildingBlocks.Infrastructure.pdb
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Infrastructure\bin\Debug\net10.0\BuildingBlocks.Core.dll
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Infrastructure\bin\Debug\net10.0\BuildingBlocks.Core.pdb
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Infrastructure\obj\Debug\net10.0\BuildingBlocks.Infrastructure.csproj.AssemblyReference.cache
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Infrastructure\obj\Debug\net10.0\BuildingBlocks.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Infrastructure\obj\Debug\net10.0\BuildingBlocks.Infrastructure.AssemblyInfoInputs.cache
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Infrastructure\obj\Debug\net10.0\BuildingBlocks.Infrastructure.AssemblyInfo.cs
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Infrastructure\obj\Debug\net10.0\BuildingBlocks.Infrastructure.csproj.CoreCompileInputs.cache
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Infrastructure\obj\Debug\net10.0\BuildingBlocks.Infrastructure.sourcelink.json
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Infrastructure\obj\Debug\net10.0\Building.718E82C6.Up2Date
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Infrastructure\obj\Debug\net10.0\BuildingBlocks.Infrastructure.dll
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Infrastructure\obj\Debug\net10.0\refint\BuildingBlocks.Infrastructure.dll
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Infrastructure\obj\Debug\net10.0\BuildingBlocks.Infrastructure.pdb
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Infrastructure\obj\Debug\net10.0\ref\BuildingBlocks.Infrastructure.dll

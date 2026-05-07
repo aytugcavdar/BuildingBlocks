@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to MicroECommerce</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            text-align: center;
+            color: white;
+        }
+
+            .header h1 {
+                margin: 0;
+                font-size: 28px;
+                font-weight: 600;
+            }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+            .content h2 {
+                color: #333;
+                font-size: 22px;
+                margin-bottom: 20px;
+            }
+
+            .content p {
+                color: #666;
+                line-height: 1.6;
+                margin-bottom: 20px;
+            }
+
+        .button {
+            display: inline-block;
+            padding: 14px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+
+        .features {
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .feature-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+            .feature-item:last-child {
+                border-bottom: none;
+            }
+
+            .feature-item strong {
+                color: #667eea;
+            }
+
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎊 Welcome Aboard!</h1>
+        </div>
+
+        <div class="content">
+            <h2>Hi {{FirstName}},</h2>
+
+            <p>Your email has been confirmed! Welcome to the MicroECommerce family.</p>
+
+            <p>We're thrilled to have you with us. Here's what you can do now:</p>
+
+            <div class="features">
+                <div class="feature-item">
+                    <strong>🛍️ Browse Products:</strong> Explore thousands of products at great prices
+                </div>
+                <div class="feature-item">
+                    <strong>💝 Special Offers:</strong> Get exclusive deals and discounts
+                </div>
+                <div class="feature-item">
+                    <strong>🚚 Fast Delivery:</strong> Free shipping on orders over $50
+                </div>
+                <div class="feature-item">
+                    <strong>🔒 Secure Shopping:</strong> Your payment information is always protected
+                </div>
+            </div>
+
+            <center>
+                <a href="https://microecommerce.com/products" class="button">
+                    Start Shopping
+                </a>
+            </center>
+
+            <p>If you have any questions, our support team is here to help at support@microecommerce.com</p>
+
+            <p>Happy shopping! 🎉</p>
+        </div>
+
+        <div class="footer">
+            <p>© {{Year}} MicroECommerce. All rights reserved.</p>
+            <p>You're receiving this email because you created an account with us.</p>
+        </div>
+    </div>
+</body>
+</html>

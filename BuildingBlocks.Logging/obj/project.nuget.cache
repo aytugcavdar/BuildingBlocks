@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "dgSpecHash": "6Xf4MOM78b4=",
+  "success": true,
+  "projectFilePath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Logging\\BuildingBlocks.Logging.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\aytug\\.nuget\\packages\\microsoft.extensions.dependencymodel\\9.0.0\\microsoft.extensions.dependencymodel.9.0.0.nupkg.sha512",
+    "C:\\Users\\aytug\\.nuget\\packages\\opentelemetry\\1.15.3\\opentelemetry.1.15.3.nupkg.sha512",
+    "C:\\Users\\aytug\\.nuget\\packages\\opentelemetry.api\\1.15.3\\opentelemetry.api.1.15.3.nupkg.sha512",
+    "C:\\Users\\aytug\\.nuget\\packages\\opentelemetry.api.providerbuilderextensions\\1.15.3\\opentelemetry.api.providerbuilderextensions.1.15.3.nupkg.sha512",
+    "C:\\Users\\aytug\\.nuget\\packages\\opentelemetry.exporter.console\\1.15.3\\opentelemetry.exporter.console.1.15.3.nupkg.sha512",
+    "C:\\Users\\aytug\\.nuget\\packages\\opentelemetry.exporter.opentelemetryprotocol\\1.15.3\\opentelemetry.exporter.opentelemetryprotocol.1.15.3.nupkg.sha512",
+    "C:\\Users\\aytug\\.nuget\\packages\\opentelemetry.extensions.hosting\\1.15.3\\opentelemetry.extensions.hosting.1.15.3.nupkg.sha512",
+    "C:\\Users\\aytug\\.nuget\\packages\\opentelemetry.instrumentation.aspnetcore\\1.15.2\\opentelemetry.instrumentation.aspnetcore.1.15.2.nupkg.sha512",
+    "C:\\Users\\aytug\\.nuget\\packages\\opentelemetry.instrumentation.http\\1.15.1\\opentelemetry.instrumentation.http.1.15.1.nupkg.sha512",
+    "C:\\Users\\aytug\\.nuget\\packages\\serilog\\4.3.0\\serilog.4.3.0.nupkg.sha512",
+    "C:\\Users\\aytug\\.nuget\\packages\\serilog.aspnetcore\\9.0.0\\serilog.aspnetcore.9.0.0.nupkg.sha512",
+    "C:\\Users\\aytug\\.nuget\\packages\\serilog.enrichers.environment\\3.0.1\\serilog.enrichers.environment.3.0.1.nupkg.sha512",
+    "C:\\Users\\aytug\\.nuget\\packages\\serilog.enrichers.thread\\4.0.0\\serilog.enrichers.thread.4.0.0.nupkg.sha512",
+    "C:\\Users\\aytug\\.nuget\\packages\\serilog.extensions.hosting\\9.0.0\\serilog.extensions.hosting.9.0.0.nupkg.sha512",
+    "C:\\Users\\aytug\\.nuget\\packages\\serilog.extensions.logging\\9.0.0\\serilog.extensions.logging.9.0.0.nupkg.sha512",
+    "C:\\Users\\aytug\\.nuget\\packages\\serilog.formatting.compact\\3.0.0\\serilog.formatting.compact.3.0.0.nupkg.sha512",
+    "C:\\Users\\aytug\\.nuget\\packages\\serilog.settings.configuration\\9.0.0\\serilog.settings.configuration.9.0.0.nupkg.sha512",
+    "C:\\Users\\aytug\\.nuget\\packages\\serilog.sinks.console\\6.1.1\\serilog.sinks.console.6.1.1.nupkg.sha512",
+    "C:\\Users\\aytug\\.nuget\\packages\\serilog.sinks.debug\\3.0.0\\serilog.sinks.debug.3.0.0.nupkg.sha512",
+    "C:\\Users\\aytug\\.nuget\\packages\\serilog.sinks.file\\6.0.0\\serilog.sinks.file.6.0.0.nupkg.sha512",
+    "C:\\Users\\aytug\\.nuget\\packages\\serilog.sinks.seq\\9.0.0\\serilog.sinks.seq.9.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

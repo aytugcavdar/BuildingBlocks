@@ -1,0 +1,13 @@
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Logging\bin\Debug\net10.0\BuildingBlocks.Logging.deps.json
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Logging\bin\Debug\net10.0\BuildingBlocks.Logging.dll
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Logging\bin\Debug\net10.0\BuildingBlocks.Logging.pdb
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Logging\obj\Debug\net10.0\BuildingBlocks.Logging.csproj.AssemblyReference.cache
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Logging\obj\Debug\net10.0\BuildingBlocks.Logging.GeneratedMSBuildEditorConfig.editorconfig
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Logging\obj\Debug\net10.0\BuildingBlocks.Logging.AssemblyInfoInputs.cache
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Logging\obj\Debug\net10.0\BuildingBlocks.Logging.AssemblyInfo.cs
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Logging\obj\Debug\net10.0\BuildingBlocks.Logging.csproj.CoreCompileInputs.cache
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Logging\obj\Debug\net10.0\BuildingBlocks.Logging.sourcelink.json
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Logging\obj\Debug\net10.0\BuildingBlocks.Logging.dll
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Logging\obj\Debug\net10.0\refint\BuildingBlocks.Logging.dll
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Logging\obj\Debug\net10.0\BuildingBlocks.Logging.pdb
+C:\proje\MicroECommerce\MicroECommerce\src\BuildingBlocks\BuildingBlocks.Logging\obj\Debug\net10.0\ref\BuildingBlocks.Logging.dll

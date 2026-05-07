@@ -1,0 +1,194 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: api-gateway-alerts
+  labels:
+    app: api-gateway
+    prometheus: kube-prometheus
+spec:
+  groups:
+  - name: api-gateway.rules
+    interval: 30s
+    rules:
+    # High Error Rate Alert
+    - alert: ApiGatewayHighErrorRate
+      expr: |
+        (
+          sum(rate(gateway_requests_total{status=~"5.."}[5m]))
+          /
+          sum(rate(gateway_requests_total[5m]))
+        ) > 0.05
+      for: 5m
+      labels:
+        severity: critical
+        component: api-gateway
+      annotations:
+        summary: "API Gateway has high error rate"
+        description: "API Gateway error rate is {{ $value | humanizePercentage }} (threshold: 5%). More than 5% of requests are failing with 5xx errors."
+        runbook_url: "https://runbooks.example.com/api-gateway/high-error-rate"
+
+    # Circuit Breaker Open Alert
+    - alert: ApiGatewayCircuitBreakerOpen
+      expr: gateway_circuit_breaker_state{state="open"} == 1
+      for: 2m
+      labels:
+        severity: warning
+        component: api-gateway
+      annotations:
+        summary: "API Gateway circuit breaker is open for {{ $labels.service }}"
+        description: "Circuit breaker for service {{ $labels.service }} has been open for more than 2 minutes. Requests to this service are being rejected."
+        runbook_url: "https://runbooks.example.com/api-gateway/circuit-breaker-open"
+
+    # High Latency Alert
+    - alert: ApiGatewayHighLatency
+      expr: |
+        histogram_quantile(0.95,
+          sum(rate(gateway_request_duration_seconds_bucket[5m])) by (le, route)
+        ) > 2
+      for: 5m
+      labels:
+        severity: warning
+        component: api-gateway
+      annotations:
+        summary: "API Gateway has high latency on route {{ $labels.route }}"
+        description: "95th percentile latency for route {{ $labels.route }} is {{ $value | humanizeDuration }} (threshold: 2s). Requests are taking longer than expected."
+        runbook_url: "https://runbooks.example.com/api-gateway/high-latency"
+
+    # High Rate Limit Rejection Rate
+    - alert: ApiGatewayHighRateLimitRejections
+      expr: |
+        (
+          sum(rate(gateway_rate_limit_rejections_total[5m])) by (route)
+          /
+          sum(rate(gateway_requests_total[5m])) by (route)
+        ) > 0.10
+      for: 5m
+      labels:
+        severity: warning
+        component: api-gateway
+      annotations:
+        summary: "API Gateway has high rate limit rejection rate on route {{ $labels.route }}"
+        description: "Rate limit rejection rate for route {{ $labels.route }} is {{ $value | humanizePercentage }} (threshold: 10%). Many requests are being rate limited."
+        runbook_url: "https://runbooks.example.com/api-gateway/high-rate-limit-rejections"
+
+    # Low Cache Hit Rate
+    - alert: ApiGatewayLowCacheHitRate
+      expr: |
+        (
+          sum(rate(gateway_cache_hits_total[10m]))
+          /
+          (sum(rate(gateway_cache_hits_total[10m])) + sum(rate(gateway_cache_misses_total[10m])))
+        ) < 0.50
+      for: 10m
+      labels:
+        severity: info
+        component: api-gateway
+      annotations:
+        summary: "API Gateway has low cache hit rate"
+        description: "Cache hit rate is {{ $value | humanizePercentage }} (threshold: 50%). Cache may not be configured optimally or cache keys may be too varied."
+        runbook_url: "https://runbooks.example.com/api-gateway/low-cache-hit-rate"
+
+    # High Memory Usage
+    - alert: ApiGatewayHighMemoryUsage
+      expr: |
+        (
+          container_memory_working_set_bytes{pod=~"api-gateway-.*"}
+          /
+          container_spec_memory_limit_bytes{pod=~"api-gateway-.*"}
+        ) > 0.85
+      for: 5m
+      labels:
+        severity: warning
+        component: api-gateway
+      annotations:
+        summary: "API Gateway pod {{ $labels.pod }} has high memory usage"
+        description: "Memory usage is {{ $value | humanizePercentage }} of limit (threshold: 85%). Pod may be at risk of OOMKill."
+        runbook_url: "https://runbooks.example.com/api-gateway/high-memory-usage"
+
+    # High CPU Usage
+    - alert: ApiGatewayHighCPUUsage
+      expr: |
+        (
+          rate(container_cpu_usage_seconds_total{pod=~"api-gateway-.*"}[5m])
+          /
+          container_spec_cpu_quota{pod=~"api-gateway-.*"}
+        ) > 0.85
+      for: 5m
+      labels:
+        severity: warning
+        component: api-gateway
+      annotations:
+        summary: "API Gateway pod {{ $labels.pod }} has high CPU usage"
+        description: "CPU usage is {{ $value | humanizePercentage }} of limit (threshold: 85%). Pod may be CPU throttled."
+        runbook_url: "https://runbooks.example.com/api-gateway/high-cpu-usage"
+
+    # Pod Restart Rate
+    - alert: ApiGatewayHighRestartRate
+      expr: |
+        rate(kube_pod_container_status_restarts_total{pod=~"api-gateway-.*"}[15m]) > 0
+      for: 5m
+      labels:
+        severity: warning
+        component: api-gateway
+      annotations:
+        summary: "API Gateway pod {{ $labels.pod }} is restarting frequently"
+        description: "Pod has restarted {{ $value }} times in the last 15 minutes. Check logs for crash reasons."
+        runbook_url: "https://runbooks.example.com/api-gateway/high-restart-rate"
+
+    # Downstream Service Unhealthy
+    - alert: ApiGatewayDownstreamServiceUnhealthy
+      expr: gateway_downstream_service_health{status="unhealthy"} == 1
+      for: 2m
+      labels:
+        severity: critical
+        component: api-gateway
+      annotations:
+        summary: "Downstream service {{ $labels.service }} is unhealthy"
+        description: "Health check for downstream service {{ $labels.service }} has been failing for more than 2 minutes."
+        runbook_url: "https://runbooks.example.com/api-gateway/downstream-service-unhealthy"
+
+    # Low Replica Count
+    - alert: ApiGatewayLowReplicaCount
+      expr: |
+        kube_deployment_status_replicas_available{deployment="api-gateway"} < 2
+      for: 5m
+      labels:
+        severity: critical
+        component: api-gateway
+      annotations:
+        summary: "API Gateway has low replica count"
+        description: "Only {{ $value }} replicas are available (minimum: 2). Service availability is at risk."
+        runbook_url: "https://runbooks.example.com/api-gateway/low-replica-count"
+
+    # HPA at Max Capacity
+    - alert: ApiGatewayHPAAtMaxCapacity
+      expr: |
+        kube_horizontalpodautoscaler_status_current_replicas{horizontalpodautoscaler="api-gateway-hpa"}
+        >=
+        kube_horizontalpodautoscaler_spec_max_replicas{horizontalpodautoscaler="api-gateway-hpa"}
+      for: 10m
+      labels:
+        severity: warning
+        component: api-gateway
+      annotations:
+        summary: "API Gateway HPA is at maximum capacity"
+        description: "HPA has scaled to maximum replicas ({{ $value }}). Consider increasing max replicas or optimizing resource usage."
+        runbook_url: "https://runbooks.example.com/api-gateway/hpa-at-max-capacity"
+
+    # Request Volume Spike
+    - alert: ApiGatewayRequestVolumeSpike
+      expr: |
+        (
+          rate(gateway_requests_total[5m])
+          /
+          rate(gateway_requests_total[1h] offset 1h)
+        ) > 2
+      for: 5m
+      labels:
+        severity: info
+        component: api-gateway
+      annotations:
+        summary: "API Gateway experiencing request volume spike"
+        description: "Request rate is {{ $value }}x higher than 1 hour ago. Monitor for potential issues."
+        runbook_url: "https://runbooks.example.com/api-gateway/request-volume-spike"
+

@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="FluentValidation" Version="11.11.0" />
+		<PackageReference Include="MediatR" Version="13.1.0" />
+		<PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="10.0.0" />
+		<PackageReference Include="Serilog" Version="4.3.0" />
+		<PackageReference Include="StackExchange.Redis" Version="2.8.16" />
+		<PackageReference Include="DistributedLock.Redis" Version="1.0.3" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\BuildingBlocks.Security\BuildingBlocks.Security.csproj" />
+	  <ProjectReference Include="..\BuildingBlocks.Core\BuildingBlocks.Core.csproj" />
+	</ItemGroup>
+
+</Project>

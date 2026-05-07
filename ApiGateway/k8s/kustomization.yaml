@@ -1,0 +1,52 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: default
+
+commonLabels:
+  app: api-gateway
+  managed-by: kustomize
+
+resources:
+  - configmap.yaml
+  - deployment.yaml
+  - service.yaml
+  - hpa.yaml
+  # Uncomment after creating secrets.yaml from template
+  # - secrets.yaml
+
+images:
+  - name: api-gateway
+    newName: your-registry/api-gateway
+    newTag: latest
+
+# ConfigMap generator (alternative to configmap.yaml)
+# configMapGenerator:
+#   - name: api-gateway-config
+#     literals:
+#       - auth-authority=https://auth.example.com
+#       - auth-audience=api-gateway
+#       - allowed-origin-1=https://app.example.com
+#       - allowed-origin-2=https://mobile.example.com
+
+# Secret generator (alternative to secrets.yaml)
+# secretGenerator:
+#   - name: api-gateway-secrets
+#     literals:
+#       - redis-connection-string=localhost:6379
+
+# Patches for environment-specific overrides
+# patchesStrategicMerge:
+#   - overlays/production/deployment-patch.yaml
+
+# JSON patches for specific modifications
+# patchesJson6902:
+#   - target:
+#       group: apps
+#       version: v1
+#       kind: Deployment
+#       name: api-gateway
+#     patch: |-
+#       - op: replace
+#         path: /spec/replicas
+#         value: 5

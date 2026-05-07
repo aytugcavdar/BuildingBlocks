@@ -1,0 +1,69 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-gateway-config
+  labels:
+    app: api-gateway
+data:
+  auth-authority: "https://auth.example.com"
+  auth-audience: "api-gateway"
+  allowed-origin-1: "https://app.example.com"
+  allowed-origin-2: "https://mobile.example.com"
+  appsettings.Production.json: |
+    {
+      "Serilog": {
+        "MinimumLevel": {
+          "Default": "Warning",
+          "Override": {
+            "Microsoft": "Error",
+            "Microsoft.AspNetCore": "Error",
+            "System": "Error",
+            "ApiGateway": "Information"
+          }
+        },
+        "WriteTo": [
+          {
+            "Name": "Console"
+          },
+          {
+            "Name": "Seq",
+            "Args": {
+              "serverUrl": "http://seq:5341"
+            }
+          }
+        ]
+      },
+      "Gateway": {
+        "Authentication": {
+          "Authority": "${AUTH_AUTHORITY}",
+          "Audience": "${AUTH_AUDIENCE}"
+        },
+        "Cache": {
+          "ConnectionString": "${REDIS_CONNECTION_STRING}"
+        },
+        "Resilience": {
+          "RetryCount": 5,
+          "RetryDelaySeconds": 3,
+          "CircuitBreakerFailureRatio": 0.3,
+          "CircuitBreakerBreakDurationSeconds": 60,
+          "TimeoutSeconds": 60
+        },
+        "Security": {
+          "AllowedOrigins": [ "${ALLOWED_ORIGIN_1}", "${ALLOWED_ORIGIN_2}" ],
+          "MaxRequestBodySizeBytes": 5242880
+        },
+        "Observability": {
+          "EnableDetailedLogging": false,
+          "EnableMetrics": true,
+          "EnableTracing": true,
+          "LogRequestBodies": false,
+          "LogResponseBodies": false
+        }
+      },
+      "CacheSettings": {
+        "Redis": {
+          "ConnectionString": "${REDIS_CONNECTION_STRING}",
+          "InstanceName": "ApiGateway:Prod:"
+        }
+      }
+    }

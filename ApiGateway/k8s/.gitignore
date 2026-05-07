@@ -1,0 +1,5 @@
+# Ignore actual secrets file (only template should be committed)
+secrets.yaml
+
+# Ignore any local overrides
+*.local.yaml
