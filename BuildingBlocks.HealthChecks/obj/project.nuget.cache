@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "GNBWkmopwBI=",
+  "dgSpecHash": "V9sGZ8dcAiY=",
   "success": true,
-  "projectFilePath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
+  "projectFilePath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\aytug\\.nuget\\packages\\aspnetcore.healthchecks.npgsql\\9.0.0\\aspnetcore.healthchecks.npgsql.9.0.0.nupkg.sha512",
     "C:\\Users\\aytug\\.nuget\\packages\\aspnetcore.healthchecks.rabbitmq\\9.0.0\\aspnetcore.healthchecks.rabbitmq.9.0.0.nupkg.sha512",
@@ -102,10 +102,10 @@
     {
       "code": "NU1902",
       "level": "Warning",
-      "message": "'KubernetesClient' 15.0.1 paketinde önem derecesi orta olan bilinen bir https://github.com/advisories/GHSA-w7r3-mgwf-4mqq güvenlik açığı var",
-      "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
+      "message": "Package 'KubernetesClient' 15.0.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-w7r3-mgwf-4mqq",
+      "projectPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
+      "filePath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
       "libraryId": "KubernetesClient",
       "targetGraphs": [
         "net10.0"
@@ -114,10 +114,10 @@
     {
       "code": "NU1902",
       "level": "Warning",
-      "message": "'MailKit' 4.9.0 paketinde önem derecesi orta olan bilinen bir https://github.com/advisories/GHSA-9j88-vvj5-vhgr güvenlik açığı var",
-      "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
+      "message": "Package 'MailKit' 4.9.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-9j88-vvj5-vhgr",
+      "projectPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
+      "filePath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
       "libraryId": "MailKit",
       "targetGraphs": [
         "net10.0"
@@ -126,10 +126,10 @@
     {
       "code": "NU1902",
       "level": "Warning",
-      "message": "'MimeKit' 4.9.0 paketinde önem derecesi orta olan bilinen bir https://github.com/advisories/GHSA-g7hc-96xr-gvvx güvenlik açığı var",
-      "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
+      "message": "Package 'MimeKit' 4.9.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g7hc-96xr-gvvx",
+      "projectPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
+      "filePath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
       "libraryId": "MimeKit",
       "targetGraphs": [
         "net10.0"
@@ -138,10 +138,10 @@
     {
       "code": "NU1902",
       "level": "Warning",
-      "message": "'OpenTelemetry.Api' 1.10.0 paketinde önem derecesi orta olan bilinen bir https://github.com/advisories/GHSA-8785-wc3w-h8q6 güvenlik açığı var",
-      "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
+      "message": "Package 'OpenTelemetry.Api' 1.10.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-8785-wc3w-h8q6",
+      "projectPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
+      "filePath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
       "libraryId": "OpenTelemetry.Api",
       "targetGraphs": [
         "net10.0"
@@ -150,10 +150,10 @@
     {
       "code": "NU1902",
       "level": "Warning",
-      "message": "'OpenTelemetry.Api' 1.10.0 paketinde önem derecesi orta olan bilinen bir https://github.com/advisories/GHSA-g94r-2vxg-569j güvenlik açığı var",
-      "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
+      "message": "Package 'OpenTelemetry.Api' 1.10.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j",
+      "projectPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
       "warningLevel": 1,
-      "filePath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
+      "filePath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
       "libraryId": "OpenTelemetry.Api",
       "targetGraphs": [
         "net10.0"

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Pw3rswG/tj8=",
+  "dgSpecHash": "4DPH2ATfwOs=",
   "success": true,
-  "projectFilePath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\ApiGateway\\ApiGateway.csproj",
+  "projectFilePath": "C:\\proje\\Core\\BuildingBlocks\\ApiGateway\\ApiGateway.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\aytug\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\aytug\\.nuget\\packages\\distributedlock.core\\1.0.6\\distributedlock.core.1.0.6.nupkg.sha512",

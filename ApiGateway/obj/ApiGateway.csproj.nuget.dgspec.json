@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\ApiGateway\\ApiGateway.csproj": {}
+    "C:\\proje\\Core\\BuildingBlocks\\ApiGateway\\ApiGateway.csproj": {}
   },
   "projects": {
-    "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\ApiGateway\\ApiGateway.csproj": {
+    "C:\\proje\\Core\\BuildingBlocks\\ApiGateway\\ApiGateway.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\ApiGateway\\ApiGateway.csproj",
+        "projectUniqueName": "C:\\proje\\Core\\BuildingBlocks\\ApiGateway\\ApiGateway.csproj",
         "projectName": "ApiGateway",
-        "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\ApiGateway\\ApiGateway.csproj",
+        "projectPath": "C:\\proje\\Core\\BuildingBlocks\\ApiGateway\\ApiGateway.csproj",
         "packagesPath": "C:\\Users\\aytug\\.nuget\\packages\\",
-        "outputPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\ApiGateway\\obj\\",
+        "outputPath": "C:\\proje\\Core\\BuildingBlocks\\ApiGateway\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,14 +32,14 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.CrossCutting\\BuildingBlocks.CrossCutting.csproj": {
-                "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.CrossCutting\\BuildingBlocks.CrossCutting.csproj"
+              "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.CrossCutting\\BuildingBlocks.CrossCutting.csproj": {
+                "projectPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.CrossCutting\\BuildingBlocks.CrossCutting.csproj"
               },
-              "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Logging\\BuildingBlocks.Logging.csproj": {
-                "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Logging\\BuildingBlocks.Logging.csproj"
+              "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Logging\\BuildingBlocks.Logging.csproj": {
+                "projectPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Logging\\BuildingBlocks.Logging.csproj"
               },
-              "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Security\\BuildingBlocks.Security.csproj": {
-                "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Security\\BuildingBlocks.Security.csproj"
+              "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Security\\BuildingBlocks.Security.csproj": {
+                "projectPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Security\\BuildingBlocks.Security.csproj"
               }
             }
           }
@@ -534,14 +534,14 @@
         }
       }
     },
-    "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Core\\BuildingBlocks.Core.csproj": {
+    "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Core\\BuildingBlocks.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Core\\BuildingBlocks.Core.csproj",
+        "projectUniqueName": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Core\\BuildingBlocks.Core.csproj",
         "projectName": "BuildingBlocks.Core",
-        "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Core\\BuildingBlocks.Core.csproj",
+        "projectPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Core\\BuildingBlocks.Core.csproj",
         "packagesPath": "C:\\Users\\aytug\\.nuget\\packages\\",
-        "outputPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Core\\obj\\",
+        "outputPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -883,14 +883,14 @@
         }
       }
     },
-    "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.CrossCutting\\BuildingBlocks.CrossCutting.csproj": {
+    "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.CrossCutting\\BuildingBlocks.CrossCutting.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.CrossCutting\\BuildingBlocks.CrossCutting.csproj",
+        "projectUniqueName": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.CrossCutting\\BuildingBlocks.CrossCutting.csproj",
         "projectName": "BuildingBlocks.CrossCutting",
-        "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.CrossCutting\\BuildingBlocks.CrossCutting.csproj",
+        "projectPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.CrossCutting\\BuildingBlocks.CrossCutting.csproj",
         "packagesPath": "C:\\Users\\aytug\\.nuget\\packages\\",
-        "outputPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.CrossCutting\\obj\\",
+        "outputPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.CrossCutting\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -911,11 +911,11 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Core\\BuildingBlocks.Core.csproj": {
-                "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Core\\BuildingBlocks.Core.csproj"
+              "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Core\\BuildingBlocks.Core.csproj": {
+                "projectPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Core\\BuildingBlocks.Core.csproj"
               },
-              "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Security\\BuildingBlocks.Security.csproj": {
-                "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Security\\BuildingBlocks.Security.csproj"
+              "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Security\\BuildingBlocks.Security.csproj": {
+                "projectPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Security\\BuildingBlocks.Security.csproj"
               }
             }
           }
@@ -1398,14 +1398,14 @@
         }
       }
     },
-    "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Logging\\BuildingBlocks.Logging.csproj": {
+    "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Logging\\BuildingBlocks.Logging.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Logging\\BuildingBlocks.Logging.csproj",
+        "projectUniqueName": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Logging\\BuildingBlocks.Logging.csproj",
         "projectName": "BuildingBlocks.Logging",
-        "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Logging\\BuildingBlocks.Logging.csproj",
+        "projectPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Logging\\BuildingBlocks.Logging.csproj",
         "packagesPath": "C:\\Users\\aytug\\.nuget\\packages\\",
-        "outputPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Logging\\obj\\",
+        "outputPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Logging\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -1934,14 +1934,14 @@
         }
       }
     },
-    "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Security\\BuildingBlocks.Security.csproj": {
+    "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Security\\BuildingBlocks.Security.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Security\\BuildingBlocks.Security.csproj",
+        "projectUniqueName": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Security\\BuildingBlocks.Security.csproj",
         "projectName": "BuildingBlocks.Security",
-        "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Security\\BuildingBlocks.Security.csproj",
+        "projectPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Security\\BuildingBlocks.Security.csproj",
         "packagesPath": "C:\\Users\\aytug\\.nuget\\packages\\",
-        "outputPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Security\\obj\\",
+        "outputPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Security\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

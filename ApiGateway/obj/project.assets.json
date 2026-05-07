@@ -2764,11 +2764,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\ApiGateway\\ApiGateway.csproj",
+      "projectUniqueName": "C:\\proje\\Core\\BuildingBlocks\\ApiGateway\\ApiGateway.csproj",
       "projectName": "ApiGateway",
-      "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\ApiGateway\\ApiGateway.csproj",
+      "projectPath": "C:\\proje\\Core\\BuildingBlocks\\ApiGateway\\ApiGateway.csproj",
       "packagesPath": "C:\\Users\\aytug\\.nuget\\packages\\",
-      "outputPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\ApiGateway\\obj\\",
+      "outputPath": "C:\\proje\\Core\\BuildingBlocks\\ApiGateway\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -2789,14 +2789,14 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.CrossCutting\\BuildingBlocks.CrossCutting.csproj": {
-              "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.CrossCutting\\BuildingBlocks.CrossCutting.csproj"
+            "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.CrossCutting\\BuildingBlocks.CrossCutting.csproj": {
+              "projectPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.CrossCutting\\BuildingBlocks.CrossCutting.csproj"
             },
-            "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Logging\\BuildingBlocks.Logging.csproj": {
-              "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Logging\\BuildingBlocks.Logging.csproj"
+            "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Logging\\BuildingBlocks.Logging.csproj": {
+              "projectPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Logging\\BuildingBlocks.Logging.csproj"
             },
-            "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Security\\BuildingBlocks.Security.csproj": {
-              "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Security\\BuildingBlocks.Security.csproj"
+            "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Security\\BuildingBlocks.Security.csproj": {
+              "projectPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Security\\BuildingBlocks.Security.csproj"
             }
           }
         }

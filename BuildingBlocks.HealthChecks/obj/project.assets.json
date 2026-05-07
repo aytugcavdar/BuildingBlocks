@@ -4489,11 +4489,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
+      "projectUniqueName": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
       "projectName": "BuildingBlocks.HealthChecks",
-      "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
+      "projectPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.HealthChecks\\BuildingBlocks.HealthChecks.csproj",
       "packagesPath": "C:\\Users\\aytug\\.nuget\\packages\\",
-      "outputPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.HealthChecks\\obj\\",
+      "outputPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.HealthChecks\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4514,8 +4514,8 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Messaging\\BuildingBlocks.Messaging.csproj": {
-              "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Messaging\\BuildingBlocks.Messaging.csproj"
+            "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Messaging\\BuildingBlocks.Messaging.csproj": {
+              "projectPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Messaging\\BuildingBlocks.Messaging.csproj"
             }
           }
         }
@@ -4888,7 +4888,7 @@
       "code": "NU1902",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "'KubernetesClient' 15.0.1 paketinde önem derecesi orta olan bilinen bir https://github.com/advisories/GHSA-w7r3-mgwf-4mqq güvenlik açığı var",
+      "message": "Package 'KubernetesClient' 15.0.1 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-w7r3-mgwf-4mqq",
       "libraryId": "KubernetesClient",
       "targetGraphs": [
         "net10.0"
@@ -4898,7 +4898,7 @@
       "code": "NU1902",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "'MailKit' 4.9.0 paketinde önem derecesi orta olan bilinen bir https://github.com/advisories/GHSA-9j88-vvj5-vhgr güvenlik açığı var",
+      "message": "Package 'MailKit' 4.9.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-9j88-vvj5-vhgr",
       "libraryId": "MailKit",
       "targetGraphs": [
         "net10.0"
@@ -4908,7 +4908,7 @@
       "code": "NU1902",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "'MimeKit' 4.9.0 paketinde önem derecesi orta olan bilinen bir https://github.com/advisories/GHSA-g7hc-96xr-gvvx güvenlik açığı var",
+      "message": "Package 'MimeKit' 4.9.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g7hc-96xr-gvvx",
       "libraryId": "MimeKit",
       "targetGraphs": [
         "net10.0"
@@ -4918,7 +4918,7 @@
       "code": "NU1902",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "'OpenTelemetry.Api' 1.10.0 paketinde önem derecesi orta olan bilinen bir https://github.com/advisories/GHSA-8785-wc3w-h8q6 güvenlik açığı var",
+      "message": "Package 'OpenTelemetry.Api' 1.10.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-8785-wc3w-h8q6",
       "libraryId": "OpenTelemetry.Api",
       "targetGraphs": [
         "net10.0"
@@ -4928,7 +4928,7 @@
       "code": "NU1902",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "'OpenTelemetry.Api' 1.10.0 paketinde önem derecesi orta olan bilinen bir https://github.com/advisories/GHSA-g94r-2vxg-569j güvenlik açığı var",
+      "message": "Package 'OpenTelemetry.Api' 1.10.0 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-g94r-2vxg-569j",
       "libraryId": "OpenTelemetry.Api",
       "targetGraphs": [
         "net10.0"

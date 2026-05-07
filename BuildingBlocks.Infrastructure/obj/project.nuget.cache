@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "egIvd/0aSD8=",
+  "dgSpecHash": "gf1PTE8Qrvw=",
   "success": true,
-  "projectFilePath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Infrastructure\\BuildingBlocks.Infrastructure.csproj",
+  "projectFilePath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Infrastructure\\BuildingBlocks.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\aytug\\.nuget\\packages\\masstransit\\8.3.4\\masstransit.8.3.4.nupkg.sha512",
     "C:\\Users\\aytug\\.nuget\\packages\\masstransit.abstractions\\8.3.4\\masstransit.abstractions.8.3.4.nupkg.sha512",

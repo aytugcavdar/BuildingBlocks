@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Core\\BuildingBlocks.Core.csproj": {}
+    "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Core\\BuildingBlocks.Core.csproj": {}
   },
   "projects": {
-    "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Core\\BuildingBlocks.Core.csproj": {
+    "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Core\\BuildingBlocks.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Core\\BuildingBlocks.Core.csproj",
+        "projectUniqueName": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Core\\BuildingBlocks.Core.csproj",
         "projectName": "BuildingBlocks.Core",
-        "projectPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Core\\BuildingBlocks.Core.csproj",
+        "projectPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Core\\BuildingBlocks.Core.csproj",
         "packagesPath": "C:\\Users\\aytug\\.nuget\\packages\\",
-        "outputPath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Core\\obj\\",
+        "outputPath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

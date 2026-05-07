@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "6Xf4MOM78b4=",
+  "dgSpecHash": "3vMNl77KJ5E=",
   "success": true,
-  "projectFilePath": "C:\\proje\\MicroECommerce\\MicroECommerce\\src\\BuildingBlocks\\BuildingBlocks.Logging\\BuildingBlocks.Logging.csproj",
+  "projectFilePath": "C:\\proje\\Core\\BuildingBlocks\\BuildingBlocks.Logging\\BuildingBlocks.Logging.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\aytug\\.nuget\\packages\\microsoft.extensions.dependencymodel\\9.0.0\\microsoft.extensions.dependencymodel.9.0.0.nupkg.sha512",
     "C:\\Users\\aytug\\.nuget\\packages\\opentelemetry\\1.15.3\\opentelemetry.1.15.3.nupkg.sha512",
