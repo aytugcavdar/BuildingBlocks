@@ -30,12 +30,10 @@ public static class GatewayServiceExtensions
             sp.GetRequiredService<YarpRouteBuilder>());
         services.AddReverseProxy();
         
-        // Add HttpClient for downstream calls with resilience policies
-        // Create a logger for resilience events
-        var serviceProvider = services.BuildServiceProvider();
-        var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
-        var resilienceLogger = loggerFactory.CreateLogger("ApiGateway.Resilience");
+        // Register ResilienceEventHandler for proper DI
+        services.AddSingleton<ResilienceEventHandler>();
         
+        // Add HttpClient for downstream calls with resilience policies
         services.AddHttpClient("downstream")
             .AddStandardResilienceHandler(options =>
             {
@@ -53,45 +51,10 @@ public static class GatewayServiceExtensions
                         response.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable ||
                         response.StatusCode == System.Net.HttpStatusCode.GatewayTimeout);
                 
-                // Add retry attempt logging
-                options.Retry.OnRetry = args =>
-                {
-                    resilienceLogger.LogWarning(
-                        "Retry attempt {AttemptNumber} for {Method} {Uri} after {Delay}ms. Reason: {Outcome}",
-                        args.AttemptNumber,
-                        args.Outcome.Result?.RequestMessage?.Method,
-                        args.Outcome.Result?.RequestMessage?.RequestUri,
-                        args.RetryDelay.TotalMilliseconds,
-                        args.Outcome.Exception?.Message ?? args.Outcome.Result?.StatusCode.ToString());
-                    return ValueTask.CompletedTask;
-                };
-                
                 // Configure circuit breaker policy
                 options.CircuitBreaker.FailureRatio = gatewayOptions.Resilience.CircuitBreakerFailureRatio;
                 options.CircuitBreaker.BreakDuration = TimeSpan.FromSeconds(
                     gatewayOptions.Resilience.CircuitBreakerBreakDurationSeconds);
-                
-                // Add circuit breaker state transition logging
-                options.CircuitBreaker.OnOpened = args =>
-                {
-                    resilienceLogger.LogError(
-                        "Circuit breaker opened for downstream service. Break duration: {BreakDuration}s. Reason: {Outcome}",
-                        args.BreakDuration.TotalSeconds,
-                        args.Outcome.Exception?.Message ?? args.Outcome.Result?.StatusCode.ToString());
-                    return ValueTask.CompletedTask;
-                };
-                
-                options.CircuitBreaker.OnClosed = args =>
-                {
-                    resilienceLogger.LogInformation("Circuit breaker closed for downstream service. Service is healthy again.");
-                    return ValueTask.CompletedTask;
-                };
-                
-                options.CircuitBreaker.OnHalfOpened = args =>
-                {
-                    resilienceLogger.LogInformation("Circuit breaker half-opened for downstream service. Testing if service recovered.");
-                    return ValueTask.CompletedTask;
-                };
                 
                 // Configure timeout policy
                 options.TotalRequestTimeout.Timeout = TimeSpan.FromSeconds(

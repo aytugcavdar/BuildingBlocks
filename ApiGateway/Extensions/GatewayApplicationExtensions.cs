@@ -1,5 +1,7 @@
+using ApiGateway.Configuration;
 using ApiGateway.Helpers;
 using ApiGateway.Middleware;
+using Microsoft.Extensions.Options;
 
 namespace ApiGateway.Extensions;
 
@@ -7,6 +9,7 @@ public static class GatewayApplicationExtensions
 {
     public static WebApplication UseApiGateway(this WebApplication app)
     {
+        var gatewayOptions = app.Services.GetRequiredService<IOptions<GatewayOptions>>().Value;
         // Exception handling (must be first)
         app.UseExceptionHandler();
         
@@ -28,8 +31,11 @@ public static class GatewayApplicationExtensions
             await next();
         });
         
-        // Authentication and Authorization
-        app.UseAuthentication();
+        // Authentication and Authorization (only if enabled)
+        if (gatewayOptions.Authentication.Enabled)
+        {
+            app.UseAuthentication();
+        }
         app.UseAuthorization();
         
         // Per-route rate limiting

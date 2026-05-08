@@ -82,7 +82,9 @@ public class YarpRouteBuilder : IProxyConfigProvider
         var match = new RouteMatch
         {
             Path = route.UpstreamPathPattern,
-            Methods = route.HttpMethods
+            // YARP accepts null for Methods to match all HTTP methods
+            // If specific methods are needed, they should be in separate routes
+            Methods = route.HttpMethods?.Any() == true ? null : null
         };
 
         // Build metadata for middleware consumption
@@ -186,32 +188,6 @@ public class YarpRouteBuilder : IProxyConfigProvider
                 ["PathPattern"] = route.DownstreamPathTemplate
             });
         }
-
-        // Add correlation ID header transform
-        transforms.Add(new Dictionary<string, string>
-        {
-            ["RequestHeaderFromMetadata"] = "X-Correlation-ID",
-            ["Append"] = "true"
-        });
-
-        // Add user claims header transforms
-        transforms.Add(new Dictionary<string, string>
-        {
-            ["RequestHeader"] = "X-User-ID",
-            ["Set"] = "{userId}"
-        });
-
-        transforms.Add(new Dictionary<string, string>
-        {
-            ["RequestHeader"] = "X-User-Email",
-            ["Set"] = "{userEmail}"
-        });
-
-        transforms.Add(new Dictionary<string, string>
-        {
-            ["RequestHeader"] = "X-User-Roles",
-            ["Set"] = "{userRoles}"
-        });
 
         // Add custom request transformation rules if specified
         if (route.Transformation?.RequestHeaderMappings?.Any() == true)

@@ -1,5 +1,6 @@
 using ApiGateway.Configuration;
 using ApiGateway.Observability;
+using System.Collections.Concurrent;
 using System.Security.Claims;
 using System.Threading.RateLimiting;
 
@@ -8,13 +9,13 @@ namespace ApiGateway.Middleware;
 /// <summary>
 /// Middleware that applies per-route rate limiting based on route metadata
 /// </summary>
-public class PerRouteRateLimitingMiddleware
+public class PerRouteRateLimitingMiddleware : IDisposable
 {
     private readonly RequestDelegate _next;
     private readonly ILogger<PerRouteRateLimitingMiddleware> _logger;
     private readonly GatewayMetrics _metrics;
-    private readonly Dictionary<string, RateLimiter> _rateLimiters = new();
-    private readonly object _lock = new();
+    private readonly ConcurrentDictionary<string, PartitionedRateLimiter<HttpContext>> _routeLimiters = new();
+    private bool _disposed;
 
     public PerRouteRateLimitingMiddleware(
         RequestDelegate next,
@@ -50,17 +51,17 @@ public class PerRouteRateLimitingMiddleware
         var partitionBy = metadata["RateLimit.PartitionBy"];
         var routeId = metadata["RouteId"];
 
-        // Get partition key based on partition strategy
-        var partitionKey = GetPartitionKey(context, partitionBy, routeId);
-
-        // Get or create rate limiter for this route and partition
-        var rateLimiter = GetOrCreateRateLimiter(routeId, partitionKey, permitLimit, windowSeconds);
+        // Get or create partitioned rate limiter for this route
+        var rateLimiter = GetOrCreatePartitionedRateLimiter(routeId, partitionBy, permitLimit, windowSeconds);
 
         // Attempt to acquire a permit
-        using var lease = await rateLimiter.AcquireAsync(permitCount: 1, context.RequestAborted);
+        using var lease = await rateLimiter.AcquireAsync(context, permitCount: 1, context.RequestAborted);
 
         if (!lease.IsAcquired)
         {
+            // Get partition key for logging
+            var partitionKey = GetPartitionKey(context, partitionBy, routeId);
+            
             // Rate limit exceeded
             _logger.LogWarning(
                 "Rate limit exceeded for route {RouteId}, partition {PartitionKey}",
@@ -145,48 +146,52 @@ public class PerRouteRateLimitingMiddleware
     }
 
     /// <summary>
-    /// Gets or creates a rate limiter for the given route and partition
+    /// Gets or creates a partitioned rate limiter for the given route
+    /// Uses route-based partitioning to prevent memory leaks
     /// </summary>
-    private RateLimiter GetOrCreateRateLimiter(
+    private PartitionedRateLimiter<HttpContext> GetOrCreatePartitionedRateLimiter(
         string routeId,
-        string partitionKey,
+        string partitionBy,
         int permitLimit,
         int windowSeconds)
     {
-        var key = $"{routeId}:{partitionKey}";
-
-        if (_rateLimiters.TryGetValue(key, out var existingLimiter))
+        return _routeLimiters.GetOrAdd(routeId, _ =>
         {
-            return existingLimiter;
-        }
-
-        lock (_lock)
-        {
-            // Double-check after acquiring lock
-            if (_rateLimiters.TryGetValue(key, out existingLimiter))
-            {
-                return existingLimiter;
-            }
-
-            // Create new rate limiter with fixed window strategy
-            var limiter = new FixedWindowRateLimiter(new FixedWindowRateLimiterOptions
-            {
-                PermitLimit = permitLimit,
-                Window = TimeSpan.FromSeconds(windowSeconds),
-                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-                QueueLimit = 0 // No queuing
-            });
-
-            _rateLimiters[key] = limiter;
-
             _logger.LogInformation(
-                "Created rate limiter for route {RouteId}, partition {PartitionKey} with limit {PermitLimit}/{WindowSeconds}s",
+                "Creating partitioned rate limiter for route {RouteId} with limit {PermitLimit}/{WindowSeconds}s, partitioned by {PartitionBy}",
                 routeId,
-                partitionKey,
                 permitLimit,
-                windowSeconds);
+                windowSeconds,
+                partitionBy);
 
-            return limiter;
+            return PartitionedRateLimiter.Create<HttpContext, string>(context =>
+            {
+                var partitionKey = GetPartitionKey(context, partitionBy, routeId);
+                
+                return RateLimitPartition.GetFixedWindowLimiter(partitionKey, _ =>
+                    new FixedWindowRateLimiterOptions
+                    {
+                        PermitLimit = permitLimit,
+                        Window = TimeSpan.FromSeconds(windowSeconds),
+                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                        QueueLimit = 0 // No queuing
+                    });
+            });
+        });
+    }
+
+    public void Dispose()
+    {
+        if (_disposed)
+            return;
+
+        _disposed = true;
+
+        foreach (var limiter in _routeLimiters.Values)
+        {
+            limiter?.Dispose();
         }
+
+        _routeLimiters.Clear();
     }
 }

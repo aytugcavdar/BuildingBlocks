@@ -11,17 +11,17 @@ namespace ApiGateway.Middleware;
 public class GatewayCacheMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly IDistributedCacheService _cacheService;
+    private readonly IDistributedCacheService? _cacheService;
     private readonly ILogger<GatewayCacheMiddleware> _logger;
     private readonly GatewayOptions _options;
     private readonly GatewayMetrics _metrics;
     
     public GatewayCacheMiddleware(
         RequestDelegate next,
-        IDistributedCacheService cacheService,
         ILogger<GatewayCacheMiddleware> logger,
         IOptions<GatewayOptions> options,
-        GatewayMetrics metrics)
+        GatewayMetrics metrics,
+        IDistributedCacheService? cacheService = null)
     {
         _next = next;
         _cacheService = cacheService;
@@ -32,15 +32,42 @@ public class GatewayCacheMiddleware
     
     public async Task InvokeAsync(HttpContext context)
     {
-        var route = context.GetEndpoint()?.Metadata.GetMetadata<RouteConfig>();
-        
-        if (route?.Cache?.Enabled != true || context.Request.Method != "GET")
+        // If cache service is not available, skip caching
+        if (_cacheService == null)
         {
             await _next(context);
             return;
         }
         
-        var cacheKey = GenerateCacheKey(context, route.Cache);
+        // Read cache configuration from YARP metadata dictionary
+        var endpoint = context.GetEndpoint();
+        var metadata = endpoint?.Metadata.GetMetadata<IReadOnlyDictionary<string, string>>();
+        
+        if (metadata == null || 
+            !metadata.TryGetValue("Cache.Enabled", out var cacheEnabledStr) ||
+            cacheEnabledStr != "true" ||
+            context.Request.Method != "GET")
+        {
+            await _next(context);
+            return;
+        }
+        
+        // Extract cache configuration from metadata
+        var ttlSeconds = metadata.TryGetValue("Cache.TtlSeconds", out var ttlStr) && int.TryParse(ttlStr, out var ttl) 
+            ? ttl 
+            : 60;
+        
+        var varyByHeaders = metadata.TryGetValue("Cache.VaryByHeaders", out var headersStr)
+            ? headersStr.Split(',', StringSplitOptions.RemoveEmptyEntries)
+            : Array.Empty<string>();
+        
+        var varyByQueryParams = metadata.TryGetValue("Cache.VaryByQueryParams", out var paramsStr)
+            ? paramsStr.Split(',', StringSplitOptions.RemoveEmptyEntries)
+            : Array.Empty<string>();
+        
+        var routeId = metadata.TryGetValue("RouteId", out var routeIdValue) ? routeIdValue : "unknown";
+        
+        var cacheKey = GenerateCacheKey(context, varyByHeaders, varyByQueryParams);
         
         var cachedResponse = await _cacheService.GetAsync<CachedResponse>(cacheKey);
         if (cachedResponse != null)
@@ -49,7 +76,7 @@ public class GatewayCacheMiddleware
             context.Response.Headers["X-Cache-Status"] = "HIT";
             
             // Record cache hit metric
-            _metrics.RecordCacheHit(route.RouteId);
+            _metrics.RecordCacheHit(routeId);
             
             // Record cache hit event in trace
             var activity = System.Diagnostics.Activity.Current;
@@ -62,7 +89,7 @@ public class GatewayCacheMiddleware
         context.Response.Headers["X-Cache-Status"] = "MISS";
         
         // Record cache miss metric
-        _metrics.RecordCacheMiss(route.RouteId);
+        _metrics.RecordCacheMiss(routeId);
         
         // Record cache miss event in trace
         var currentActivity = System.Diagnostics.Activity.Current;
@@ -91,12 +118,12 @@ public class GatewayCacheMiddleware
             
             var cacheOptions = new CacheEntryOptions
             {
-                AbsoluteExpiration = DateTimeOffset.UtcNow.Add(TimeSpan.FromSeconds(route.Cache.TtlSeconds))
+                AbsoluteExpiration = DateTimeOffset.UtcNow.Add(TimeSpan.FromSeconds(ttlSeconds))
             };
             
             await _cacheService.SetAsync(cacheKey, cacheEntry, cacheOptions);
             _logger.LogInformation("Cached response for {Path} with TTL {Ttl}s", 
-                context.Request.Path, route.Cache.TtlSeconds);
+                context.Request.Path, ttlSeconds);
         }
         
         // Write response to client
@@ -104,7 +131,7 @@ public class GatewayCacheMiddleware
         await responseBody.CopyToAsync(originalBodyStream);
     }
     
-    private string GenerateCacheKey(HttpContext context, CachePolicy policy)
+    private string GenerateCacheKey(HttpContext context, string[] varyByHeaders, string[] varyByQueryParams)
     {
         var keyParts = new List<string>
         {
@@ -113,7 +140,7 @@ public class GatewayCacheMiddleware
         };
         
         // Vary by query parameters
-        foreach (var param in policy.VaryByQueryParams)
+        foreach (var param in varyByQueryParams)
         {
             if (context.Request.Query.TryGetValue(param, out var value))
             {
@@ -122,7 +149,7 @@ public class GatewayCacheMiddleware
         }
         
         // Vary by headers
-        foreach (var header in policy.VaryByHeaders)
+        foreach (var header in varyByHeaders)
         {
             if (context.Request.Headers.TryGetValue(header, out var value))
             {

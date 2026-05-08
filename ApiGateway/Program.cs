@@ -34,3 +34,6 @@ finally
 {
     Log.CloseAndFlush();
 }
+
+// Make the implicit Program class public for WebApplicationFactory
+public partial class Program { }
