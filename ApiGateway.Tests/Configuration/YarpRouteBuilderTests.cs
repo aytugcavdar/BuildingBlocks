@@ -79,10 +79,11 @@ public class YarpRouteBuilderTests
 
         // Assert
         var route = config.Routes.First();
-        route.Metadata.Should().ContainKey("ApiVersion");
-        route.Metadata["ApiVersion"].Should().Be("v2");
-        route.Metadata.Should().ContainKey("IsDefaultVersion");
-        route.Metadata["IsDefaultVersion"].Should().Be("True");
+        var metadata = route.Metadata!;
+        metadata.Should().ContainKey("ApiVersion");
+        metadata["ApiVersion"].Should().Be("v2");
+        metadata.Should().ContainKey("IsDefaultVersion");
+        metadata["IsDefaultVersion"].Should().Be("True");
     }
 
     [Fact]
@@ -115,12 +116,41 @@ public class YarpRouteBuilderTests
 
         // Assert
         var route = config.Routes.First();
-        route.Metadata.Should().ContainKey("RateLimit.PermitLimit");
-        route.Metadata["RateLimit.PermitLimit"].Should().Be("100");
-        route.Metadata.Should().ContainKey("RateLimit.WindowSeconds");
-        route.Metadata["RateLimit.WindowSeconds"].Should().Be("60");
-        route.Metadata.Should().ContainKey("RateLimit.PartitionBy");
-        route.Metadata["RateLimit.PartitionBy"].Should().Be("user");
+        var metadata = route.Metadata!;
+        metadata.Should().ContainKey("RateLimit.PermitLimit");
+        metadata["RateLimit.PermitLimit"].Should().Be("100");
+        metadata.Should().ContainKey("RateLimit.WindowSeconds");
+        metadata["RateLimit.WindowSeconds"].Should().Be("60");
+        metadata.Should().ContainKey("RateLimit.PartitionBy");
+        metadata["RateLimit.PartitionBy"].Should().Be("user");
+    }
+
+    [Fact]
+    public void BuildYarpRoute_ShouldIncludeConfiguredHttpMethods()
+    {
+        // Arrange
+        var configuration = CreateConfiguration(new GatewayOptions
+        {
+            Routes = new List<GatewayRouteConfig>
+            {
+                new()
+                {
+                    RouteId = "method-route",
+                    UpstreamPathPattern = "/api/methods",
+                    DownstreamServiceUrl = "http://service",
+                    HttpMethods = new List<string> { "GET", "post" },
+                    Enabled = true
+                }
+            }
+        });
+
+        // Act
+        var builder = new YarpRouteBuilder(configuration, _logger);
+        var config = builder.GetConfig();
+
+        // Assert
+        var route = config.Routes.First();
+        route.Match.Methods.Should().BeEquivalentTo("GET", "POST");
     }
 
     [Fact]
@@ -154,14 +184,15 @@ public class YarpRouteBuilderTests
 
         // Assert
         var route = config.Routes.First();
-        route.Metadata.Should().ContainKey("Cache.Enabled");
-        route.Metadata["Cache.Enabled"].Should().Be("true");
-        route.Metadata.Should().ContainKey("Cache.TtlSeconds");
-        route.Metadata["Cache.TtlSeconds"].Should().Be("300");
-        route.Metadata.Should().ContainKey("Cache.VaryByHeaders");
-        route.Metadata["Cache.VaryByHeaders"].Should().Be("Accept-Language,Authorization");
-        route.Metadata.Should().ContainKey("Cache.VaryByQueryParams");
-        route.Metadata["Cache.VaryByQueryParams"].Should().Be("page,size");
+        var metadata = route.Metadata!;
+        metadata.Should().ContainKey("Cache.Enabled");
+        metadata["Cache.Enabled"].Should().Be("true");
+        metadata.Should().ContainKey("Cache.TtlSeconds");
+        metadata["Cache.TtlSeconds"].Should().Be("300");
+        metadata.Should().ContainKey("Cache.VaryByHeaders");
+        metadata["Cache.VaryByHeaders"].Should().Be("Accept-Language,Authorization");
+        metadata.Should().ContainKey("Cache.VaryByQueryParams");
+        metadata["Cache.VaryByQueryParams"].Should().Be("page,size");
     }
 
     [Fact]
@@ -190,10 +221,11 @@ public class YarpRouteBuilderTests
 
         // Assert
         var route = config.Routes.First();
-        route.Metadata.Should().ContainKey("IsAggregation");
-        route.Metadata["IsAggregation"].Should().Be("true");
-        route.Metadata.Should().ContainKey("AggregationTargets");
-        route.Metadata["AggregationTargets"].Should().Be("users-service,orders-service,products-service");
+        var metadata = route.Metadata!;
+        metadata.Should().ContainKey("IsAggregation");
+        metadata["IsAggregation"].Should().Be("true");
+        metadata.Should().ContainKey("AggregationTargets");
+        metadata["AggregationTargets"].Should().Be("users-service,orders-service,products-service");
     }
 
     [Fact]
@@ -255,7 +287,7 @@ public class YarpRouteBuilderTests
         route.Transforms.Should().NotContain(t => t.ContainsKey("PathPattern"));
     }
 
-    [Fact(Skip = "YarpRouteBuilder does not validate RouteId")]
+    [Fact]
     public void BuildConfiguration_ShouldThrowGatewayConfigurationException_WhenRouteIdIsEmpty()
     {
         // Arrange
@@ -279,7 +311,7 @@ public class YarpRouteBuilderTests
             .WithMessage("*RouteId*");
     }
 
-    [Fact(Skip = "YarpRouteBuilder does not validate UpstreamPathPattern")]
+    [Fact]
     public void BuildConfiguration_ShouldThrowGatewayConfigurationException_WhenUpstreamPathIsEmpty()
     {
         // Arrange
@@ -302,7 +334,7 @@ public class YarpRouteBuilderTests
         act.Should().Throw<GatewayConfigurationException>();
     }
 
-    [Fact(Skip = "YarpRouteBuilder does not validate DownstreamServiceUrl")]
+    [Fact]
     public void BuildConfiguration_ShouldThrowGatewayConfigurationException_WhenDownstreamUrlIsInvalid()
     {
         // Arrange
@@ -346,6 +378,14 @@ public class YarpRouteBuilderTests
             configDict["Gateway:Routes:0:RateLimit:PermitLimit"] = firstRoute.RateLimit.PermitLimit.ToString();
             configDict["Gateway:Routes:0:RateLimit:WindowSeconds"] = firstRoute.RateLimit.WindowSeconds.ToString();
             configDict["Gateway:Routes:0:RateLimit:PartitionBy"] = firstRoute.RateLimit.PartitionBy;
+        }
+
+        if (firstRoute?.HttpMethods != null)
+        {
+            for (int i = 0; i < firstRoute.HttpMethods.Count; i++)
+            {
+                configDict[$"Gateway:Routes:0:HttpMethods:{i}"] = firstRoute.HttpMethods[i];
+            }
         }
 
         // Add cache config if present

@@ -23,9 +23,22 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        return services.AddBuildingBlocksCaching(configuration, "CacheSettings");
+    }
+
+    /// <summary>
+    /// Adds BuildingBlocks caching with multi-level support (Memory + Redis).
+    /// Reads "BuildingBlocks:Caching" by default and falls back to "CacheSettings".
+    /// </summary>
+    public static IServiceCollection AddBuildingBlocksCaching(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        string sectionName = "BuildingBlocks:Caching")
+    {
         // Bind configuration
-        var cacheSettings = configuration.GetSection("CacheSettings").Get<CacheSettings>() ?? new CacheSettings();
-        services.Configure<CacheSettings>(configuration.GetSection("CacheSettings"));
+        var section = GetSection(configuration, sectionName, "CacheSettings");
+        var cacheSettings = section.Get<CacheSettings>() ?? new CacheSettings();
+        services.Configure<CacheSettings>(section);
 
         // Validate configuration
         ValidateConfiguration(cacheSettings);
@@ -75,6 +88,17 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IDistributedCacheService, MultiLevelCacheService>();
 
         return services;
+    }
+
+    private static IConfigurationSection GetSection(
+        IConfiguration configuration,
+        string preferredSectionName,
+        string fallbackSectionName)
+    {
+        var preferred = configuration.GetSection(preferredSectionName);
+        return preferred.Exists()
+            ? preferred
+            : configuration.GetSection(fallbackSectionName);
     }
 
     private static void ValidateConfiguration(CacheSettings settings)

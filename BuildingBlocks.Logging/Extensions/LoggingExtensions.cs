@@ -10,6 +10,13 @@ namespace BuildingBlocks.Logging.Extensions;
 
 public static class LoggingExtensions
 {
+    public static WebApplicationBuilder AddBuildingBlocksLogging(
+        this WebApplicationBuilder builder,
+        string applicationName)
+    {
+        return builder.AddSerilogLogging(applicationName);
+    }
+
     /// <summary>
     /// Serilog'u ASP.NET Core uygulamasına ekler.
     /// Development: Debug seviye + Console + File + Seq
@@ -94,13 +101,13 @@ public static class LoggingExtensions
 
             options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
             {
-                diagnosticContext.Set("RequestHost", httpContext.Request.Host.Value);
+                diagnosticContext.Set("RequestHost", httpContext.Request.Host.Value ?? string.Empty);
                 diagnosticContext.Set("RequestScheme", httpContext.Request.Scheme);
                 diagnosticContext.Set("UserAgent", httpContext.Request.Headers["User-Agent"].ToString());
-                diagnosticContext.Set("RemoteIP", httpContext.Connection.RemoteIpAddress?.ToString());
+                diagnosticContext.Set("RemoteIP", httpContext.Connection.RemoteIpAddress?.ToString() ?? string.Empty);
 
                 if (httpContext.Request.QueryString.HasValue)
-                    diagnosticContext.Set("QueryString", httpContext.Request.QueryString.Value);
+                    diagnosticContext.Set("QueryString", httpContext.Request.QueryString.Value ?? string.Empty);
 
                 if (httpContext.Response.ContentLength.HasValue)
                     diagnosticContext.Set("ResponseSize", httpContext.Response.ContentLength.Value);
@@ -127,5 +134,10 @@ public static class LoggingExtensions
         });
 
         return app;
+    }
+
+    public static WebApplication UseBuildingBlocksRequestLogging(this WebApplication app)
+    {
+        return app.UseSerilogRequestLogging();
     }
 }

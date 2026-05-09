@@ -1,9 +1,7 @@
 namespace BuildingBlocks.Messaging.IntegrationEvents;
 
 /// <summary>
-/// Integration event marker interface.
-/// Servisler arası asenkron iletişimde kullanılan eventlerin işaretleyici interface'i.
-/// MassTransit consumer'ları bu interface üzerinden tip güvenliği sağlar.
+/// Marker contract for integration events used in asynchronous service communication.
 /// </summary>
 public interface IIntegrationEvent
 {

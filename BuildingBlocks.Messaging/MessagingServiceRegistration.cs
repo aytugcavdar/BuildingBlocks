@@ -11,38 +11,70 @@ namespace BuildingBlocks.Messaging;
 public static class MessagingServiceRegistration
 {
     /// <summary>
-    /// Email, template ve mesaj bus servislerini register eder.
+    /// Registers generic messaging, email, and template services.
     /// </summary>
     public static IServiceCollection AddMessagingServices(
         this IServiceCollection services,
         IConfiguration configuration,
         Assembly? consumersAssembly = null)
     {
-        // EmailOptions konfigürasyonu
-        services.Configure<EmailOptions>(configuration.GetSection("EmailOptions"));
+        return services.AddBuildingBlocksMessaging(
+            configuration,
+            consumersAssembly,
+            emailSectionName: "EmailOptions",
+            rabbitMqSectionName: "RabbitMQ");
+    }
 
-        // Template servisi
+    /// <summary>
+    /// Registers BuildingBlocks messaging, email, and template services.
+    /// Reads "BuildingBlocks:Messaging:*" sections by default and falls back to legacy names.
+    /// </summary>
+    public static IServiceCollection AddBuildingBlocksMessaging(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        Assembly? consumersAssembly = null,
+        string emailSectionName = "BuildingBlocks:Messaging:Email",
+        string rabbitMqSectionName = "BuildingBlocks:Messaging:RabbitMQ")
+    {
+        var emailSection = GetSection(configuration, emailSectionName, "EmailOptions");
+        services.Configure<EmailOptions>(emailSection);
+
         services.AddScoped<ITemplateService, TemplateService>();
-
-        // SMTP Email servisi
         services.AddScoped<IEmailService, SmtpEmailService>();
-
-        // RabbitMQ / MassTransit
-        services.AddMessageBus(configuration, consumersAssembly);
+        services.AddBuildingBlocksMessageBus(
+            configuration,
+            consumersAssembly,
+            sectionName: rabbitMqSectionName);
 
         return services;
     }
 
     /// <summary>
-    /// SMS servisini register eder.
-    /// Production'da gerçek ISmsService implementasyonu ile override et.
+    /// Registers the default SMS service. Override ISmsService in production when needed.
     /// </summary>
     public static IServiceCollection AddSmsServices(
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // Development/debug için stub implementation
+        return services.AddBuildingBlocksSms(configuration);
+    }
+
+    public static IServiceCollection AddBuildingBlocksSms(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
         services.AddScoped<ISmsService, DebugSmsService>();
         return services;
+    }
+
+    private static IConfigurationSection GetSection(
+        IConfiguration configuration,
+        string preferredSectionName,
+        string fallbackSectionName)
+    {
+        var preferred = configuration.GetSection(preferredSectionName);
+        return preferred.Exists()
+            ? preferred
+            : configuration.GetSection(fallbackSectionName);
     }
 }

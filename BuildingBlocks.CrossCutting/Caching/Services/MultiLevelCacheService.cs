@@ -14,8 +14,8 @@ namespace BuildingBlocks.CrossCutting.Caching.Services;
 public class MultiLevelCacheService : IDistributedCacheService
 {
     private readonly CacheSettings _settings;
-    private readonly ICacheProvider _l1Provider;
-    private readonly ICacheProvider _l2Provider;
+    private readonly ICacheProvider? _l1Provider;
+    private readonly ICacheProvider? _l2Provider;
     private readonly ILogger<MultiLevelCacheService> _logger;
     private readonly CacheKeyGenerator _keyGenerator;
     private readonly JsonCacheSerializer _serializer;
@@ -36,11 +36,15 @@ public class MultiLevelCacheService : IDistributedCacheService
 
         var providerList = providers?.ToList() ?? throw new ArgumentNullException(nameof(providers));
 
-        _l1Provider = providerList.FirstOrDefault(p => p.ProviderName == "Memory")
-            ?? throw new InvalidOperationException("Memory cache provider not found");
+        _l1Provider = _settings.EnableL1Cache
+            ? providerList.FirstOrDefault(p => p.ProviderName == "Memory")
+                ?? throw new InvalidOperationException("Memory cache provider not found")
+            : null;
 
-        _l2Provider = providerList.FirstOrDefault(p => p.ProviderName == "Redis")
-            ?? throw new InvalidOperationException("Redis cache provider not found");
+        _l2Provider = _settings.EnableL2Cache
+            ? providerList.FirstOrDefault(p => p.ProviderName == "Redis")
+                ?? throw new InvalidOperationException("Redis cache provider not found")
+            : null;
 
         ValidateConfiguration();
     }
@@ -64,7 +68,9 @@ public class MultiLevelCacheService : IDistributedCacheService
         try
         {
             // Check L1 cache first
-            var l1Data = await _l1Provider.GetAsync(key, cancellationToken);
+            var l1Data = _l1Provider != null
+                ? await _l1Provider.GetAsync(key, cancellationToken)
+                : null;
             if (l1Data != null)
             {
                 _statistics.RecordHit();
@@ -77,18 +83,23 @@ public class MultiLevelCacheService : IDistributedCacheService
                     _logger.LogInformation("Cache hit (L1) for key '{Key}' in {Duration}ms", key, sw.Elapsed.TotalMilliseconds);
                 }
 
-                return _serializer.Deserialize<T>(l1Data);
+                return _serializer.Deserialize<T>(CompressionHelper.Decompress(l1Data));
             }
 
             // Check L2 cache
-            var l2Data = await _l2Provider.GetAsync(key, cancellationToken);
+            var l2Data = _l2Provider != null
+                ? await _l2Provider.GetAsync(key, cancellationToken)
+                : null;
             if (l2Data != null)
             {
                 _statistics.RecordHit();
                 _statistics.RecordL2Hit();
 
                 // Promote to L1
-                await _l1Provider.SetAsync(key, l2Data, TimeSpan.FromSeconds(_settings.DefaultTtlSeconds), cancellationToken);
+                if (_l1Provider != null)
+                {
+                    await _l1Provider.SetAsync(key, l2Data, TimeSpan.FromSeconds(_settings.DefaultTtlSeconds), cancellationToken);
+                }
 
                 sw.Stop();
                 _statistics.RecordOperationDuration("Get", sw.Elapsed.TotalMilliseconds);
@@ -98,7 +109,7 @@ public class MultiLevelCacheService : IDistributedCacheService
                     _logger.LogInformation("Cache hit (L2) for key '{Key}' in {Duration}ms, promoted to L1", key, sw.Elapsed.TotalMilliseconds);
                 }
 
-                return _serializer.Deserialize<T>(l2Data);
+                return _serializer.Deserialize<T>(CompressionHelper.Decompress(l2Data));
             }
 
             // Cache miss
@@ -130,10 +141,10 @@ public class MultiLevelCacheService : IDistributedCacheService
 
             // Compress if needed
             var compressed = false;
-            if (data.Length > _settings.CompressionThresholdBytes)
+            if (_settings.EnableCompression && data.Length > _settings.CompressionThresholdBytes)
             {
                 data = CompressionHelper.Compress(data);
-                compressed = data.Length < originalSize;
+                compressed = CompressionHelper.IsCompressed(data);
             }
 
             // Get expiration
@@ -143,12 +154,12 @@ public class MultiLevelCacheService : IDistributedCacheService
             // Write to both levels in parallel
             var tasks = new List<Task>();
 
-            if (_settings.EnableL1Cache)
+            if (_l1Provider != null)
             {
                 tasks.Add(_l1Provider.SetAsync(key, data, finalExpiration, cancellationToken));
             }
 
-            if (_settings.EnableL2Cache)
+            if (_l2Provider != null)
             {
                 tasks.Add(_l2Provider.SetAsync(key, data, finalExpiration, cancellationToken));
             }
@@ -184,6 +195,11 @@ public class MultiLevelCacheService : IDistributedCacheService
         foreach (var tag in tags)
         {
             var tagKey = $"tag:{tag}";
+            if (_l2Provider == null)
+            {
+                return;
+            }
+
             var existingData = await _l2Provider.GetAsync(tagKey, cancellationToken);
 
             HashSet<string> keys;
@@ -209,11 +225,17 @@ public class MultiLevelCacheService : IDistributedCacheService
 
         try
         {
-            var tasks = new List<Task<bool>>
+            var tasks = new List<Task<bool>>();
+
+            if (_l1Provider != null)
             {
-                _l1Provider.RemoveAsync(key, cancellationToken),
-                _l2Provider.RemoveAsync(key, cancellationToken)
-            };
+                tasks.Add(_l1Provider.RemoveAsync(key, cancellationToken));
+            }
+
+            if (_l2Provider != null)
+            {
+                tasks.Add(_l2Provider.RemoveAsync(key, cancellationToken));
+            }
 
             var results = await Task.WhenAll(tasks);
 
@@ -240,11 +262,11 @@ public class MultiLevelCacheService : IDistributedCacheService
 
     public async Task<bool> ExistsAsync(string key, CancellationToken cancellationToken = default)
     {
-        var l1Exists = await _l1Provider.ExistsAsync(key, cancellationToken);
+        var l1Exists = _l1Provider != null && await _l1Provider.ExistsAsync(key, cancellationToken);
         if (l1Exists)
             return true;
 
-        return await _l2Provider.ExistsAsync(key, cancellationToken);
+        return _l2Provider != null && await _l2Provider.ExistsAsync(key, cancellationToken);
     }
 
     public async Task<int> RemoveByPatternAsync(string pattern, CancellationToken cancellationToken = default)
@@ -253,6 +275,11 @@ public class MultiLevelCacheService : IDistributedCacheService
 
         try
         {
+            if (_l2Provider == null)
+            {
+                return 0;
+            }
+
             var keys = await _l2Provider.ScanKeysAsync(pattern, 10000, cancellationToken);
             var removeTasks = keys.Select(key => RemoveAsync(key, cancellationToken));
             var results = await Task.WhenAll(removeTasks);
@@ -282,6 +309,11 @@ public class MultiLevelCacheService : IDistributedCacheService
         try
         {
             var tagKey = $"tag:{tag}";
+            if (_l2Provider == null)
+            {
+                return 0;
+            }
+
             var tagData = await _l2Provider.GetAsync(tagKey, cancellationToken);
 
             if (tagData == null)

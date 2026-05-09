@@ -7,17 +7,26 @@ namespace BuildingBlocks.CrossCutting.Locking;
 
 public static class LockingExtensions
 {
-    public static IServiceCollection AddDistributedLocking(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddDistributedLocking(
+        this IServiceCollection services,
+        IConfiguration configuration)
     {
-        var redisConnectionString = configuration.GetConnectionString("Redis") 
-            ?? configuration.GetValue<string>("CacheSettings:RedisUrl") 
+        return services.AddBuildingBlocksDistributedLocking(configuration);
+    }
+
+    public static IServiceCollection AddBuildingBlocksDistributedLocking(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        var redisConnectionString = configuration.GetConnectionString("Redis")
+            ?? configuration.GetValue<string>("BuildingBlocks:Caching:RedisConnectionString")
+            ?? configuration.GetValue<string>("CacheSettings:RedisConnectionString")
+            ?? configuration.GetValue<string>("CacheSettings:RedisUrl")
             ?? "localhost:6379";
 
-        // StackExchange.Redis bağlantısı Singleton olarak kaydedilir
-        services.AddSingleton<IConnectionMultiplexer>(sp => 
+        services.AddSingleton<IConnectionMultiplexer>(_ =>
             ConnectionMultiplexer.Connect(redisConnectionString));
 
-        // Kilit mekanizması kaydedilir
         services.AddSingleton<IDistributedLock, RedisDistributedLockProvider>();
 
         return services;

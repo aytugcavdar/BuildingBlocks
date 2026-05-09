@@ -7,12 +7,14 @@ namespace BuildingBlocks.CrossCutting.Caching.Core;
 /// </summary>
 public static class CompressionHelper
 {
+    private static readonly byte[] Header = "BBGZ1"u8.ToArray();
+
     /// <summary>
     /// Compresses data using GZip. Returns original data if compression increases size.
     /// </summary>
     public static byte[] Compress(byte[] data)
     {
-        if (data == null || data.Length == 0)
+        if (data.Length == 0)
         {
             return data;
         }
@@ -25,25 +27,50 @@ public static class CompressionHelper
 
         var compressedData = outputStream.ToArray();
 
-        // Return original if compression doesn't reduce size
-        return compressedData.Length < data.Length ? compressedData : data;
+        if (compressedData.Length + Header.Length >= data.Length)
+        {
+            return data;
+        }
+
+        var result = new byte[Header.Length + compressedData.Length];
+        Buffer.BlockCopy(Header, 0, result, 0, Header.Length);
+        Buffer.BlockCopy(compressedData, 0, result, Header.Length, compressedData.Length);
+        return result;
     }
 
     /// <summary>
-    /// Decompresses GZip-compressed data.
+    /// Decompresses data compressed by <see cref="Compress"/>. Unmarked data is returned unchanged.
     /// </summary>
-    public static byte[] Decompress(byte[] compressedData)
+    public static byte[] Decompress(byte[] data)
     {
-        if (compressedData == null || compressedData.Length == 0)
+        if (!IsCompressed(data))
         {
-            return compressedData;
+            return data;
         }
 
-        using var inputStream = new MemoryStream(compressedData);
+        using var inputStream = new MemoryStream(data, Header.Length, data.Length - Header.Length);
         using var gzipStream = new GZipStream(inputStream, CompressionMode.Decompress);
         using var outputStream = new MemoryStream();
         
         gzipStream.CopyTo(outputStream);
         return outputStream.ToArray();
+    }
+
+    public static bool IsCompressed(byte[] data)
+    {
+        if (data.Length < Header.Length)
+        {
+            return false;
+        }
+
+        for (var i = 0; i < Header.Length; i++)
+        {
+            if (data[i] != Header[i])
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

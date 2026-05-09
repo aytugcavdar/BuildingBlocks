@@ -15,14 +15,24 @@ public static class AuthenticationExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        var tokenOptions = configuration
-            .GetSection("TokenOptions")
-            .Get<TokenOptions>()
-            ?? throw new InvalidOperationException(
-                "TokenOptions configuration is missing in appsettings.json. " +
-                "Please add 'TokenOptions' section with Audience, Issuer, SecurityKey, etc.");
+        return services.AddBuildingBlocksJwtAuthentication(configuration, "TokenOptions");
+    }
 
-        // Bir kez validate et — duplikasyon yok
+    public static IServiceCollection AddBuildingBlocksJwtAuthentication(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        string sectionName = "BuildingBlocks:Security:TokenOptions")
+    {
+        var tokenOptions = configuration
+            .GetSection(sectionName)
+            .Get<TokenOptions>()
+            ?? configuration
+                .GetSection("TokenOptions")
+                .Get<TokenOptions>()
+            ?? throw new InvalidOperationException(
+                "Token options configuration is missing. " +
+                "Please add 'BuildingBlocks:Security:TokenOptions' or legacy 'TokenOptions' section.");
+
         ValidateSecurityKey(tokenOptions.SecurityKey);
 
         services.AddAuthentication(options =>
@@ -53,42 +63,45 @@ public static class AuthenticationExtensions
                 OnAuthenticationFailed = context =>
                 {
                     if (context.Exception is SecurityTokenExpiredException)
+                    {
                         context.Response.Headers.Append("Token-Expired", "true");
+                    }
+
                     return Task.CompletedTask;
                 },
-
                 OnChallenge = context =>
                 {
                     context.HandleResponse();
-                    context.Response.StatusCode = 401;
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                     context.Response.ContentType = "application/json";
+
                     var result = JsonSerializer.Serialize(new
                     {
                         success = false,
                         message = "You are not authorized to access this resource. Please login.",
-                        statusCode = 401
+                        statusCode = StatusCodes.Status401Unauthorized
                     });
+
                     return context.Response.WriteAsync(result);
                 },
-
                 OnForbidden = context =>
                 {
-                    context.Response.StatusCode = 403;
+                    context.Response.StatusCode = StatusCodes.Status403Forbidden;
                     context.Response.ContentType = "application/json";
+
                     var result = JsonSerializer.Serialize(new
                     {
                         success = false,
                         message = "You do not have permission to access this resource.",
-                        statusCode = 403
+                        statusCode = StatusCodes.Status403Forbidden
                     });
+
                     return context.Response.WriteAsync(result);
                 },
-
                 OnTokenValidated = _ => Task.CompletedTask
             };
         });
 
-        // Policyleri merkezi AuthorizationPolicies sınıfından yükle
         services.AddAuthorization(options =>
         {
             options.FallbackPolicy = null;
@@ -103,15 +116,22 @@ public static class AuthenticationExtensions
     private static void ValidateSecurityKey(string securityKey)
     {
         if (string.IsNullOrWhiteSpace(securityKey))
+        {
             throw new InvalidOperationException(
-                "JWT SecurityKey cannot be empty! Set it via environment variable.");
+                "JWT SecurityKey cannot be empty. Set it via configuration or environment variable.");
+        }
 
-        if (securityKey.Contains("REPLACED") || securityKey.Contains("your_"))
+        if (securityKey.Contains("REPLACED", StringComparison.OrdinalIgnoreCase) ||
+            securityKey.Contains("your_", StringComparison.OrdinalIgnoreCase))
+        {
             throw new InvalidOperationException(
-                "JWT SecurityKey contains placeholder text! You must set a real key.");
+                "JWT SecurityKey contains placeholder text. Set a real key.");
+        }
 
         if (securityKey.Length < 32)
+        {
             throw new InvalidOperationException(
-                "JWT SecurityKey must be at least 32 characters for security!");
+                "JWT SecurityKey must be at least 32 characters.");
+        }
     }
 }

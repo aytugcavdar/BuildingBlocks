@@ -37,6 +37,9 @@ public static class GatewayApplicationExtensions
             app.UseAuthentication();
         }
         app.UseAuthorization();
+
+        // Enforce route-level authentication, roles, and policy metadata from Gateway routes.
+        app.UseMiddleware<RouteAuthorizationMiddleware>();
         
         // Per-route rate limiting
         app.UseMiddleware<PerRouteRateLimitingMiddleware>();

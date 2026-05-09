@@ -22,14 +22,15 @@ public static class ServiceCollectionExtensions
     public static IHealthChecksBuilder AddBuildingBlocksHealthChecks(
         this IServiceCollection services,
         IConfiguration configuration,
-        string sectionName = "HealthChecks")
+        string sectionName = "BuildingBlocks:HealthChecks")
     {
         // Bind and validate configuration
-        var options = configuration.GetSection(sectionName).Get<HealthCheckOptions>() ?? new HealthCheckOptions();
+        var section = GetSection(configuration, sectionName, "HealthChecks");
+        var options = section.Get<HealthCheckOptions>() ?? new HealthCheckOptions();
         ValidateConfiguration(options);
 
         // Register options as singleton
-        services.Configure<HealthCheckOptions>(configuration.GetSection(sectionName));
+        services.Configure<HealthCheckOptions>(section);
         services.AddSingleton(sp => sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<HealthCheckOptions>>().Value);
 
         // Register metrics
@@ -55,6 +56,17 @@ public static class ServiceCollectionExtensions
         }
 
         return builder;
+    }
+
+    private static IConfigurationSection GetSection(
+        IConfiguration configuration,
+        string preferredSectionName,
+        string fallbackSectionName)
+    {
+        var preferred = configuration.GetSection(preferredSectionName);
+        return preferred.Exists()
+            ? preferred
+            : configuration.GetSection(fallbackSectionName);
     }
 
     private static void ValidateConfiguration(HealthCheckOptions options)

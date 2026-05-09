@@ -79,12 +79,14 @@ public class YarpRouteBuilder : IProxyConfigProvider
     /// </summary>
     private YarpRouteConfig BuildYarpRoute(GatewayRouteConfig route)
     {
+        ValidateRoute(route);
+
         var match = new RouteMatch
         {
             Path = route.UpstreamPathPattern,
-            // YARP accepts null for Methods to match all HTTP methods
-            // If specific methods are needed, they should be in separate routes
-            Methods = route.HttpMethods?.Any() == true ? null : null
+            Methods = route.HttpMethods?.Any() == true
+                ? route.HttpMethods.Select(method => method.ToUpperInvariant()).ToArray()
+                : null
         };
 
         // Build metadata for middleware consumption
@@ -207,6 +209,28 @@ public class YarpRouteBuilder : IProxyConfigProvider
         }
 
         return transforms;
+    }
+
+    private static void ValidateRoute(GatewayRouteConfig route)
+    {
+        if (string.IsNullOrWhiteSpace(route.RouteId))
+        {
+            throw new Exceptions.GatewayConfigurationException("RouteId is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(route.UpstreamPathPattern))
+        {
+            throw new Exceptions.GatewayConfigurationException(
+                $"UpstreamPathPattern is required for route {route.RouteId}.");
+        }
+
+        if (!route.IsAggregation &&
+            (string.IsNullOrWhiteSpace(route.DownstreamServiceUrl) ||
+             !Uri.TryCreate(route.DownstreamServiceUrl, UriKind.Absolute, out _)))
+        {
+            throw new Exceptions.GatewayConfigurationException(
+                $"DownstreamServiceUrl must be an absolute URL for route {route.RouteId}.");
+        }
     }
 
     /// <summary>

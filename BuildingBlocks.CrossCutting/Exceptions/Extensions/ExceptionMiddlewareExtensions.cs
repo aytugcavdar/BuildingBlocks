@@ -12,6 +12,11 @@ public static class ExceptionMiddlewareExtensions
     /// </summary>
     public static IApplicationBuilder UseCustomExceptionMiddleware(this IApplicationBuilder app)
     {
+        return app.UseBuildingBlocksExceptionHandling();
+    }
+
+    public static IApplicationBuilder UseBuildingBlocksExceptionHandling(this IApplicationBuilder app)
+    {
         return app.UseMiddleware<ExceptionMiddleware>();
     }
 
@@ -20,6 +25,11 @@ public static class ExceptionMiddlewareExtensions
     /// AddCustomExceptionMiddleware() çağrısı yeterliydi ama DI için gerekli.
     /// </summary>
     public static IServiceCollection AddCustomExceptionMiddleware(this IServiceCollection services)
+    {
+        return services.AddBuildingBlocksExceptionHandling();
+    }
+
+    public static IServiceCollection AddBuildingBlocksExceptionHandling(this IServiceCollection services)
     {
         services.AddTransient<HttpExceptionHandler>();
         return services;

@@ -1,20 +1,19 @@
 namespace BuildingBlocks.Messaging.IntegrationEvents;
 
 /// <summary>
-/// Tüm integration event'lerin türeyeceği base class.
-/// IIntegrationEvent implement eder — MassTransit consumer'lar için tip güvenliği sağlar.
+/// Base type for integration events published between services.
 /// </summary>
 public abstract class IntegrationEvent : IIntegrationEvent
 {
-    /// <summary>Event'in benzersiz kimliği.</summary>
+    /// <summary>Unique event identifier.</summary>
     public Guid Id { get; } = Guid.NewGuid();
 
-    /// <summary>Event'in oluşturulduğu UTC zaman damgası.</summary>
+    /// <summary>UTC timestamp for when the event instance was created.</summary>
     public DateTime CreatedAt { get; } = DateTime.UtcNow;
 
-    /// <summary>Event'i gönderen servis adı (opsiyonel, tracing için).</summary>
+    /// <summary>Optional source service name for tracing and diagnostics.</summary>
     public string? Source { get; init; }
 
-    /// <summary>Correlation ID — request zincirini takip etmek için (opsiyonel).</summary>
+    /// <summary>Optional correlation identifier for request and message flow tracing.</summary>
     public string? CorrelationId { get; init; }
 }

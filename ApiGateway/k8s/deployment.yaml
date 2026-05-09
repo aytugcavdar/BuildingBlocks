@@ -32,27 +32,32 @@ spec:
           value: "Production"
         - name: ASPNETCORE_URLS
           value: "http://+:8080"
-        - name: AUTH_AUTHORITY
+        - name: Gateway__Authentication__Authority
           valueFrom:
             configMapKeyRef:
               name: api-gateway-config
               key: auth-authority
-        - name: AUTH_AUDIENCE
+        - name: Gateway__Authentication__Audience
           valueFrom:
             configMapKeyRef:
               name: api-gateway-config
               key: auth-audience
-        - name: REDIS_CONNECTION_STRING
+        - name: Gateway__Cache__ConnectionString
           valueFrom:
             secretKeyRef:
               name: api-gateway-secrets
               key: redis-connection-string
-        - name: ALLOWED_ORIGIN_1
+        - name: CacheSettings__RedisConnectionString
+          valueFrom:
+            secretKeyRef:
+              name: api-gateway-secrets
+              key: redis-connection-string
+        - name: Gateway__Security__AllowedOrigins__0
           valueFrom:
             configMapKeyRef:
               name: api-gateway-config
               key: allowed-origin-1
-        - name: ALLOWED_ORIGIN_2
+        - name: Gateway__Security__AllowedOrigins__1
           valueFrom:
             configMapKeyRef:
               name: api-gateway-config

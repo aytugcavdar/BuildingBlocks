@@ -14,6 +14,11 @@ public static class RateLimitingExtensions
     /// </summary>
     public static IServiceCollection AddCustomRateLimiting(this IServiceCollection services, int permitLimit = 100, int windowTimeInSeconds = 60)
     {
+        return services.AddBuildingBlocksRateLimiting(permitLimit, windowTimeInSeconds);
+    }
+
+    public static IServiceCollection AddBuildingBlocksRateLimiting(this IServiceCollection services, int permitLimit = 100, int windowTimeInSeconds = 60)
+    {
         services.AddRateLimiter(options =>
         {
             options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
@@ -52,6 +57,11 @@ public static class RateLimitingExtensions
     /// Adds rate limiter middleware to the pipeline
     /// </summary>
     public static IApplicationBuilder UseCustomRateLimiting(this IApplicationBuilder app)
+    {
+        return app.UseBuildingBlocksRateLimiting();
+    }
+
+    public static IApplicationBuilder UseBuildingBlocksRateLimiting(this IApplicationBuilder app)
     {
         app.UseRateLimiter();
         return app;

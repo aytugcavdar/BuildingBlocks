@@ -6,7 +6,7 @@ public class RouteConfig
     public string UpstreamPathPattern { get; set; } = string.Empty;
     public string DownstreamServiceUrl { get; set; } = string.Empty;
     public string DownstreamPathTemplate { get; set; } = string.Empty;
-    public List<string> HttpMethods { get; set; } = new() { "GET", "POST", "PUT", "DELETE", "PATCH" };
+    public List<string> HttpMethods { get; set; } = new();
     public bool Enabled { get; set; } = true;
     public int TimeoutSeconds { get; set; } = 30;
     public bool RequireAuthentication { get; set; } = true;

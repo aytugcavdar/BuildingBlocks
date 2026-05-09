@@ -41,6 +41,11 @@ public class CacheSettings
     public bool EnableVerboseLogging { get; set; } = false;
 
     /// <summary>
+    /// Gets or sets whether compression is enabled for values above the threshold.
+    /// </summary>
+    public bool EnableCompression { get; set; } = true;
+
+    /// <summary>
     /// Gets or sets whether L1 (memory) cache is enabled.
     /// </summary>
     public bool EnableL1Cache { get; set; } = true;
