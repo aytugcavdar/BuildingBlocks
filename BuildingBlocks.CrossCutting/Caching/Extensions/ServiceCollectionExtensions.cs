@@ -7,6 +7,7 @@ using BuildingBlocks.CrossCutting.Caching.Services;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 
 namespace BuildingBlocks.CrossCutting.Caching.Extensions;
@@ -44,6 +45,7 @@ public static class ServiceCollectionExtensions
         ValidateConfiguration(cacheSettings);
 
         // Register core components
+        services.AddLogging();
         services.AddSingleton<CacheKeyGenerator>();
         services.AddSingleton<JsonCacheSerializer>();
 

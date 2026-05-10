@@ -1,20 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Description>Cross-cutting infrastructure helpers for caching, authentication, validation, locking, rate limiting, and exception handling.</Description>
+	</PropertyGroup>
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="FluentValidation" Version="11.11.0" />
-		<PackageReference Include="MediatR" Version="13.1.0" />
-		<PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="10.0.0" />
-		<PackageReference Include="Serilog" Version="4.3.0" />
-		<PackageReference Include="StackExchange.Redis" Version="2.8.16" />
-		<PackageReference Include="DistributedLock.Redis" Version="1.0.3" />
+		<PackageReference Include="FluentValidation" />
+		<PackageReference Include="MediatR" />
+		<PackageReference Include="Microsoft.Extensions.Http.Resilience" />
+		<PackageReference Include="Serilog" />
+		<PackageReference Include="StackExchange.Redis" />
+		<PackageReference Include="DistributedLock.Redis" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\BuildingBlocks.Security\BuildingBlocks.Security.csproj" />

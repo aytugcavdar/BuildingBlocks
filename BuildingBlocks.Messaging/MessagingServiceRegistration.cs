@@ -1,4 +1,5 @@
 using BuildingBlocks.Messaging.Email;
+using BuildingBlocks.Messaging.EventBus;
 using BuildingBlocks.Messaging.MassTransit;
 using BuildingBlocks.Messaging.SMS;
 using BuildingBlocks.Messaging.Templates;
@@ -41,6 +42,7 @@ public static class MessagingServiceRegistration
 
         services.AddScoped<ITemplateService, TemplateService>();
         services.AddScoped<IEmailService, SmtpEmailService>();
+        services.AddScoped<IEventBus, MassTransitEventBus>();
         services.AddBuildingBlocksMessageBus(
             configuration,
             consumersAssembly,

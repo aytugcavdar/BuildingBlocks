@@ -1,6 +1,5 @@
 using BuildingBlocks.HealthChecks.Checks;
 using BuildingBlocks.HealthChecks.Core;
-using BuildingBlocks.Messaging.MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -13,10 +12,10 @@ namespace BuildingBlocks.HealthChecks.Extensions;
 public static class RabbitMqHealthCheckExtensions
 {
     /// <summary>
-    /// Adds a RabbitMQ health check using RabbitMqOptions from configuration.
+    /// Adds a RabbitMQ health check using RabbitMqHealthCheckOptions from configuration.
     /// </summary>
     /// <param name="builder">The health checks builder.</param>
-    /// <param name="configuration">The configuration instance to read RabbitMqOptions from.</param>
+    /// <param name="configuration">The configuration instance to read RabbitMqHealthCheckOptions from.</param>
     /// <param name="name">The health check name. Default: "rabbitmq".</param>
     /// <param name="timeout">The health check timeout. If null, uses default from HealthCheckOptions.</param>
     /// <param name="tags">Additional tags for the health check.</param>
@@ -28,7 +27,7 @@ public static class RabbitMqHealthCheckExtensions
         TimeSpan? timeout = null,
         params string[] tags)
     {
-        var rabbitMqOptions = configuration.GetSection("RabbitMq").Get<RabbitMqOptions>() ?? new RabbitMqOptions();
+        var rabbitMqOptions = GetRabbitMqOptions(configuration);
         var connectionString = BuildConnectionString(rabbitMqOptions);
 
         return builder.AddRabbitMqHealthCheck(connectionString, name, timeout, tags);
@@ -66,7 +65,15 @@ public static class RabbitMqHealthCheckExtensions
             timeout: timeout);
     }
 
-    private static string BuildConnectionString(RabbitMqOptions options)
+    private static RabbitMqHealthCheckOptions GetRabbitMqOptions(IConfiguration configuration)
+    {
+        return configuration.GetSection("BuildingBlocks:Messaging:RabbitMQ").Get<RabbitMqHealthCheckOptions>()
+            ?? configuration.GetSection("RabbitMQ").Get<RabbitMqHealthCheckOptions>()
+            ?? configuration.GetSection("RabbitMq").Get<RabbitMqHealthCheckOptions>()
+            ?? new RabbitMqHealthCheckOptions();
+    }
+
+    private static string BuildConnectionString(RabbitMqHealthCheckOptions options)
     {
         return $"amqp://{options.UserName}:{options.Password}@{options.Host}{options.VirtualHost}";
     }

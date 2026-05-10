@@ -19,8 +19,15 @@ public class JwtHelper : ITokenHelper
 
     public JwtHelper(IConfiguration configuration)
     {
-        _tokenOptions = configuration.GetSection("TokenOptions").Get<TokenOptions>()
-            ?? throw new ArgumentNullException(nameof(TokenOptions));
+        _tokenOptions = configuration
+            .GetSection("BuildingBlocks:Security:TokenOptions")
+            .Get<TokenOptions>()
+            ?? configuration
+                .GetSection("TokenOptions")
+                .Get<TokenOptions>()
+            ?? throw new InvalidOperationException(
+                "Token options configuration is missing. " +
+                "Please add 'BuildingBlocks:Security:TokenOptions' or legacy 'TokenOptions' section.");
 
         _securityKey = SecurityKeyHelper.CreateSecurityKey(_tokenOptions.SecurityKey);
     }

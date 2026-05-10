@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "BuildingBlocks",
+  "classifications": [
+    "Web",
+    "API",
+    "Microservice"
+  ],
+  "identity": "BuildingBlocks.Templates.Microservice",
+  "name": "BuildingBlocks Microservice",
+  "shortName": "bb-microservice",
+  "sourceName": "Microservice.Template",
+  "preferNameDirectory": true,
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "primaryOutputs": [
+    {
+      "path": "Microservice.Template.csproj"
+    }
+  ],
+  "symbols": {
+    "Framework": {
+      "type": "parameter",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "net10.0"
+        }
+      ],
+      "defaultValue": "net10.0",
+      "replaces": "net10.0",
+      "description": "Target framework for the generated service."
+    }
+  }
+}

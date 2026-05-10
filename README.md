@@ -9,7 +9,7 @@ This repository is being shaped as a generic infrastructure toolkit that can be 
 The project is in an active hardening phase.
 
 - Builds cleanly with `0` warnings and `0` errors.
-- Test suite currently passes with `58` tests.
+- Test suite currently passes with `91` tests.
 - Known vulnerable NuGet package scan is clean.
 - Domain-specific messaging artifacts from the old basket/order/payment project have been removed from `BuildingBlocks.Messaging`.
 - A composition package now exists for services that want to opt into the full stack with one setup call.
@@ -166,6 +166,28 @@ builder.AddBuildingBlocksDefaults();
 app.UseBuildingBlocksDefaults();
 ```
 
+## Microservice Template
+
+Install the local template:
+
+```powershell
+dotnet new install .\templates\microservice --force
+```
+
+Create a new service:
+
+```powershell
+dotnet new bb-microservice -n Catalog.Api -o .\samples\Catalog.Api
+```
+
+Before the packages are published to an internal feed, restore generated services with the local package output:
+
+```powershell
+dotnet restore .\samples\Catalog.Api\Catalog.Api.csproj "--source=.\artifacts\packages" "--source=https://api.nuget.org/v3/index.json"
+```
+
+The generated service starts with memory caching and health checks enabled. Messaging, JWT, distributed locking, SMS, and rate limiting are disabled by default so the app can run without Redis or RabbitMQ.
+
 ## Messaging Scope
 
 `BuildingBlocks.Messaging` is intentionally domain-neutral.
@@ -194,6 +216,9 @@ Use these commands from the repository root:
 ```powershell
 dotnet build BuildingBlocks.sln -v minimal
 dotnet test BuildingBlocks.sln -v minimal
+Get-ChildItem -Path . -Directory -Filter 'BuildingBlocks.*' |
+  Where-Object { $_.Name -notlike '*.Tests' } |
+  ForEach-Object { dotnet pack (Join-Path $_.FullName ($_.Name + '.csproj')) --configuration Release --no-build -v minimal }
 dotnet list BuildingBlocks.sln package --vulnerable --include-transitive
 ```
 
@@ -201,13 +226,16 @@ Expected current result:
 
 ```text
 Build: 0 warnings, 0 errors
-Tests: 58 passed
+Tests: 91 passed
+Packages: generated under artifacts/packages
 Vulnerable packages: none reported
 ```
 
 ## Upgrade Roadmap
 
 ### 1. HealthChecks Dependency Cleanup
+
+Status: completed.
 
 Goal: make `BuildingBlocks.HealthChecks` independent from `BuildingBlocks.Messaging` unless a service explicitly opts into RabbitMQ health checks.
 
@@ -217,6 +245,8 @@ Expected outcome:
 - RabbitMQ health checks remain available through configuration or optional registration.
 
 ### 2. Messaging Publish Abstraction
+
+Status: completed.
 
 Goal: add a thin publish abstraction without hiding MassTransit too much.
 
@@ -239,16 +269,18 @@ Expected outcome:
 
 ### 3. BuildingBlocks Test Projects
 
+Status: in progress.
+
 Goal: move coverage from mostly gateway-focused tests to package-level tests.
 
 Planned projects:
 
 ```text
-BuildingBlocks.CrossCutting.Tests
-BuildingBlocks.Messaging.Tests
-BuildingBlocks.Security.Tests
-BuildingBlocks.HealthChecks.Tests
-BuildingBlocks.Infrastructure.Tests
+BuildingBlocks.CrossCutting.Tests   created
+BuildingBlocks.Messaging.Tests      created
+BuildingBlocks.Security.Tests       created
+BuildingBlocks.HealthChecks.Tests   created
+BuildingBlocks.Infrastructure.Tests created
 ```
 
 First focus:
@@ -260,6 +292,8 @@ First focus:
 
 ### 4. Central Package Management
 
+Status: completed.
+
 Goal: introduce `Directory.Packages.props`.
 
 Expected outcome:
@@ -269,6 +303,8 @@ Expected outcome:
 - Security updates become less repetitive.
 
 ### 5. Analyzer and Formatting Baseline
+
+Status: completed.
 
 Goal: add `.editorconfig`, analyzer rules, and optional warnings-as-errors for package code.
 
@@ -280,6 +316,8 @@ Expected outcome:
 
 ### 6. CI Quality Gate
 
+Status: completed.
+
 Goal: add GitHub Actions for build, test, and package vulnerability scan.
 
 Expected outcome:
@@ -290,10 +328,13 @@ Expected outcome:
 dotnet restore
 dotnet build
 dotnet test
+dotnet pack
 dotnet list package --vulnerable --include-transitive
 ```
 
 ### 7. NuGet Packaging Strategy
+
+Status: completed.
 
 Goal: prepare packages for internal or public NuGet distribution.
 
@@ -303,7 +344,18 @@ Expected outcome:
 - Semantic versioning is clear.
 - Consumers can reference only the packages they need.
 
+Current package baseline:
+
+```text
+VersionPrefix: 0.1.0
+Output: artifacts/packages
+Packages: BuildingBlocks.Core, CrossCutting, HealthChecks, Infrastructure, Logging, Messaging, Security, Composition
+Symbols: snupkg
+```
+
 ### 8. Microservice Template
+
+Status: completed.
 
 Goal: add a service starter template after the packages stabilize.
 
@@ -317,7 +369,7 @@ Expected outcome:
 The immediate next engineering priority is:
 
 ```text
-HealthChecks dependency cleanup
+Package hardening backlog
 ```
 
-That is the first real package dependency simplification step after the composition layer.
+The reusable package baseline is now in place. The next phase is hardening: API docs, stricter analyzer rules, package dependency trimming, and real sample services.

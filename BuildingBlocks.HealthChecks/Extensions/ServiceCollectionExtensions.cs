@@ -4,6 +4,7 @@ using BuildingBlocks.HealthChecks.Telemetry;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Logging;
 
 namespace BuildingBlocks.HealthChecks.Extensions;
 
@@ -30,6 +31,7 @@ public static class ServiceCollectionExtensions
         ValidateConfiguration(options);
 
         // Register options as singleton
+        services.AddLogging();
         services.Configure<HealthCheckOptions>(section);
         services.AddSingleton(sp => sp.GetRequiredService<Microsoft.Extensions.Options.IOptions<HealthCheckOptions>>().Value);
 

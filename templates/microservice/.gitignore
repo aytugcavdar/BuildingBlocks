@@ -1,0 +1,8 @@
+bin/
+obj/
+artifacts/
+.vs/
+.vscode/*
+!.vscode/settings.json
+*.user
+*.suo

@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NSubstitute;
 
-namespace ApiGateway.Tests.Caching;
+namespace BuildingBlocks.CrossCutting.Tests.Caching;
 
 public class MultiLevelCacheServiceTests
 {
